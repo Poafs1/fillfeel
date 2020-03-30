@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FillFeel</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_history">History</string>
+    <string name="nav_saved">Saved</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
