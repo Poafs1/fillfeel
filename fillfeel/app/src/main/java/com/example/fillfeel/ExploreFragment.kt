@@ -46,12 +46,10 @@ class ExploreFragment : Fragment() {
         val gson = Gson()
         val exploreDataType = object : TypeToken<List<ExploreObject>>() {}.type
         val exploreObj: List<ExploreObject> = gson.fromJson(jsonFileString, exploreDataType)
+        val highlightsObj = exploreObj.sortedWith(compareByDescending({ it.rate }))
 
-//        for (item in exploreObj)  {
-//            data.add(item)
-//        }
         for (item in 1..5) {
-
+            data.add(highlightsObj[item - 1])
         }
 
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
