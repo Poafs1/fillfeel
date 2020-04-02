@@ -6,5 +6,7 @@
     <string name="nav_profile">Profile</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="facebook_app_id">304691117171321</string>
+    <string name="fb_login_protocol_scheme">fb304691117171321</string>
+
 </resources>

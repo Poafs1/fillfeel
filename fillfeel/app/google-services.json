@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "303398836769",
+    "firebase_url": "https://fillfeel-cd71d.firebaseio.com",
+    "project_id": "fillfeel-cd71d",
+    "storage_bucket": "fillfeel-cd71d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303398836769:android:f6d2950b5471641cbfe160",
+        "android_client_info": {
+          "package_name": "com.example.fillfeel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303398836769-qt26psr21mf9fq55684oceuedf1hh0u0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fillfeel",
+            "certificate_hash": "62b87e1592c01f0d5235aa9b14a707191803058d"
+          }
+        },
+        {
+          "client_id": "303398836769-5edo2qlf19mpgg9c9sh3ldfhiblep8un.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1dTmz7UmXJlJTxLQmLqpTZEw1um8LmAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303398836769-5edo2qlf19mpgg9c9sh3ldfhiblep8un.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
