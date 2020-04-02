@@ -46,24 +46,83 @@ class ExploreFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val data :MutableList<ExploreObject> = ArrayList<ExploreObject>()
+        //Create Data Array
+        val highlightData :MutableList<ExploreObject> = ArrayList<ExploreObject>()
+        val childData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
+        val elderData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
+        val patientData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
+        val animalData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
+        val envData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
 
+        //read json data
         val jsonFileString = getJsonDataFromAsset(requireContext(), "exploreModel.json")
         val gson = Gson()
         val exploreDataType = object : TypeToken<List<ExploreObject>>() {}.type
         val exploreObj: List<ExploreObject> = gson.fromJson(jsonFileString, exploreDataType)
-        val highlightsObj = exploreObj.sortedWith(compareByDescending({ it.rate }))
 
+        //create object & filled filter data
+        val highlightsObj = exploreObj.sortedWith(compareByDescending({it.rate}))
+        val childObj = exploreObj.filter({it.tag == "Children and youth"})
+        val elderObj = exploreObj.filter({it.tag == "Elderer"})
+        val patientObj = exploreObj.filter({it.tag == "Patient and disabled"})
+        val animalObj = exploreObj.filter({it.tag == "Animal"})
+        val envObj = exploreObj.filter({it.tag == "Environment"})
+
+        //loop for adding object to the list
+        //in highlight will show only 5 items, others shows all
         for (item in 1..5) {
-            data.add(highlightsObj[item - 1])
+            highlightData.add(highlightsObj[item - 1])
+        }
+        for (item in 1..childObj.size) {
+            childData.add(childObj[item - 1])
+        }
+        for (item in 1..elderObj.size) {
+            elderData.add(elderObj[item - 1])
+        }
+        for (item in 1..patientObj.size) {
+            patientData.add(patientObj[item - 1])
+        }
+        for (item in 1..animalObj.size) {
+            animalData.add(animalObj[item - 1])
+        }
+        for (item in 1..envObj.size) {
+            envData.add(envObj[item - 1])
         }
 
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        //send data to adapter
+        //CustomAdapter is big card_view
+        //miniAdapter is small card_view
+        val highlightAdapter = CustomAdapter(highlightData)
+        val childAdapter = miniAdapter(childData)
+        val elderAdapter = miniAdapter(elderData)
+        val patientAdapter = miniAdapter(patientData)
+        val animalAdapter = miniAdapter(animalData)
+        val envAdapter = miniAdapter(envData)
 
-        val adapter = CustomAdapter(data)
-
-        rvlist.layoutManager = layoutManager
+        //highlight
+        rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvlist.setHasFixedSize(true)
-        rvlist.adapter = adapter
+        rvlist.adapter = highlightAdapter
+        //child
+        child_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        child_rvlist.setHasFixedSize(true)
+        child_rvlist.adapter = childAdapter
+        //elder
+        elder_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        elder_rvlist.setHasFixedSize(true)
+        elder_rvlist.adapter = elderAdapter
+        //patient
+        patient_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        patient_rvlist.setHasFixedSize(true)
+        patient_rvlist.adapter = patientAdapter
+        //animal
+        animal_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        animal_rvlist.setHasFixedSize(true)
+        animal_rvlist.adapter = animalAdapter
+        //env
+        env_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        env_rvlist.setHasFixedSize(true)
+        env_rvlist.adapter = envAdapter
+
     }
 }
