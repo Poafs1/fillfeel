@@ -2,12 +2,14 @@ package com.example.fillfeel
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.card_view.view.*
@@ -42,6 +44,20 @@ class miniAdapter (
     override fun onBindViewHolder(holder: miniAdapter.ViewHolder, position: Int) {
         holder.eventTitle.text = data[position].title
         holder.eventImage.setImageBitmap(convert(data[position].img))
+
+        holder.itemView.setOnClickListener{view ->
+            val activity = view.context as AppCompatActivity
+            val fragment = DetailsFragment()
+
+            val bundle = Bundle()
+            bundle.putString("eventId", data[position].id.toString())
+            fragment.setArguments(bundle)
+
+            fragment.arguments = bundle
+
+            activity.getSupportFragmentManager()
+                .beginTransaction().replace(R.id.root_layout, fragment).addToBackStack(null).commit();
+        }
 
         items.add(holder.card)
     }
