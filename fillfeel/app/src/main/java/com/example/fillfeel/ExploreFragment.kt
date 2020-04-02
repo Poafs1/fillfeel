@@ -12,8 +12,11 @@ import androidx.annotation.IdRes
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.fragment_explore.*
 import java.io.IOException
 
@@ -21,6 +24,9 @@ import java.io.IOException
  * A simple [Fragment] subclass.
  */
 class ExploreFragment : Fragment() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var bottomNavigation: BottomNavigationView
 
     fun getJsonDataFromAsset(context: Context, fileName: String): String? {
         val jsonString: String
@@ -34,6 +40,20 @@ class ExploreFragment : Fragment() {
     }
 
     lateinit var navController: NavController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+//        auth = FirebaseAuth.getInstance()
+//        val currentUser = auth.currentUser
+//        Log.d("ExploreFragment", currentUser?.email)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bottomNavigation = activity!!.findViewById(R.id.bottom_navigation)
+        bottomNavigation.menu.getItem(0).isChecked = true
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
