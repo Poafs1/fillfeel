@@ -1,6 +1,7 @@
 package com.example.fillfeel
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Shader
@@ -14,8 +15,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -101,6 +100,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val nightMode = getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        when(nightMode) {
+            Configuration.UI_MODE_NIGHT_NO -> {
+                val view = window.decorView
+                view.systemUiVisibility =
+                    view.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+            Configuration.UI_MODE_NIGHT_YES -> {
+                val view = window.decorView
+                view.systemUiVisibility =
+                    view.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+            }
+        }
 
         auth = FirebaseAuth.getInstance()
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

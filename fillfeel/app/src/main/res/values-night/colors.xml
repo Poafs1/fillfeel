@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#1A1A1A</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorItWhite">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorItDark">#1A1A1A</color>
     <color name="colorSmoke">#F2F2F2</color>
     <color name="colorAccent">#EF6DA0</color>
-    <color name="colorDarkSmoke">#E6E6E6</color>
-    <color name="colorQuoteWhite">#B3B3B3</color>
-    <color name="colorQuoteDark">#4D4D4D</color>
+    <color name="colorDarkSmoke">#4D4D4D</color>
+    <color name="colorQuoteWhite">#666666</color>
+    <color name="colorQuoteDark">#FFFFFF</color>
     <color name="colorJustBlue">#006FFA</color>
+    <color name="colorPrimaryPink">#EF6DA0</color>
+    <color name="colorPrimaryOrange">#EE8E6B</color>
 </resources>

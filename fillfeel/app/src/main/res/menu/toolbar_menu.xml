@@ -11,4 +11,11 @@
         android:icon="@drawable/ic_add_24px"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/settings_button"
+        android:orderInCategory="300"
+        android:title="Add Button"
+        android:icon="@drawable/ic_settings_24px"
+        app:showAsAction="ifRoom" />
+
 </menu>
