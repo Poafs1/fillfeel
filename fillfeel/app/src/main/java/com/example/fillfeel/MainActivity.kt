@@ -281,7 +281,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUI(account: FirebaseUser?) {
 //        val fragment = ExploreFragment()
-        val fragment = DetailsFragment()
+        val fragment = ProfileFragment()
         authenticationPage.visibility = View.GONE
         supportActionBar?.show()
         bottomNavigation.visibility = View.VISIBLE

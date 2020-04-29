@@ -1,13 +1,13 @@
 package com.example.fillfeel
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import com.facebook.internal.Utility.arrayList
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -30,16 +30,15 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         bottomNavigation = activity!!.findViewById(R.id.bottom_navigation)
         bottomNavigation.menu.getItem(3).isChecked = true
 
-        val signOutButton = getView()!!.findViewById<View>(R.id.signout_button)
-        signOutButton.setOnClickListener{view ->
-            auth.signOut()
-            val intent = Intent(getContext(), MainActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
-        }
+//        val signOutButton = getView()!!.findViewById<View>(R.id.signout_button)
+//        signOutButton.setOnClickListener{view ->
+//            auth.signOut()
+//            val intent = Intent(getContext(), MainActivity::class.java)
+//            startActivity(intent)
+//            activity?.finish()
+//        }
     }
 }
