@@ -15,6 +15,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -31,6 +33,9 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
@@ -46,33 +51,44 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mCallbackManager: CallbackManager
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val currentFragment: Fragment? =
+            fragmentManager.findFragmentById(R.id.root_layout)
         when (item.itemId) {
             R.id.bottomNavigationExploreMenuId -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.root_layout, ExploreFragment())
-                    .addToBackStack(null).commit();
+                if (!currentFragment?.tag.equals("Explore_Fragment")) {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.root_layout, ExploreFragment(), "Explore_Fragment")
+                        .addToBackStack(null).commit();
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.bottomNavigationHistoryMenuId -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.root_layout, HistoryFragment())
-                    .addToBackStack(null).commit();
+                if (!currentFragment?.tag.equals("History_Fragment")) {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.root_layout, HistoryFragment(), "History_Fragment")
+                        .addToBackStack(null).commit();
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.bottomNavigationSavedMenuId -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.root_layout, SavedFragment())
-                    .addToBackStack(null).commit();
+                if (!currentFragment?.tag.equals("Saved_Fragment")) {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.root_layout, SavedFragment(), "Saved_Fragment")
+                        .addToBackStack(null).commit();
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.bottomNavigationProfileMenuId -> {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.root_layout, ProfileFragment())
-                    .addToBackStack(null).commit();
+                if (!currentFragment?.tag.equals("Profile_Fragment")) {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.root_layout, ProfileFragment(), "Profile_Fragment")
+                        .addToBackStack(null).commit();
+                }
                 return@OnNavigationItemSelectedListener true
             }
             else -> return@OnNavigationItemSelectedListener false
@@ -86,12 +102,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id: Int = item.getItemId()
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val currentFragment: Fragment? =
+            fragmentManager.findFragmentById(R.id.root_layout)
         if (id == R.id.add_event) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.root_layout, AddEventFragment())
-                .addToBackStack(null).commit();
+            if (!currentFragment?.tag.equals("AddEvent_Fragment")) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.root_layout, AddEventFragment(), "AddEvent_Fragment")
+                    .addToBackStack(null).commit();
 //            Toast.makeText(this@MainActivity, "Action clicked", Toast.LENGTH_LONG).show()
+            }
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -99,6 +120,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        val eventsRef = Firebase.database.getReference("events")
+        eventsRef.keepSynced(true)
+
         setContentView(R.layout.activity_main)
 
         val nightMode = getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -254,7 +280,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(account: FirebaseUser?) {
-        val fragment = ExploreFragment()
+//        val fragment = ExploreFragment()
+        val fragment = DetailsFragment()
         authenticationPage.visibility = View.GONE
         supportActionBar?.show()
         bottomNavigation.visibility = View.VISIBLE
