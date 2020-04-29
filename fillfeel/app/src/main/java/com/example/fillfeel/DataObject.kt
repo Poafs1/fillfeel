@@ -1,12 +1,9 @@
 package com.example.fillfeel
 
-import android.content.Context
-import java.io.IOException
-
-data class ExploreObject (
-    val id: Int,
-    val title: String,
-    val img: String,
-    val rate: Double,
-    val tag: String
+class ExploreObject (
+    var id: String? = null,
+    var title: String? = null,
+    var img: String? = null,
+    var paletteImage: String? = null
 )
+

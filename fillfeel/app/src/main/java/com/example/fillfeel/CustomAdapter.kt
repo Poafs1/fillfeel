@@ -2,6 +2,7 @@ package com.example.fillfeel
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -16,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.card_view.view.*
 import java.security.AccessController.getContext
 
@@ -48,7 +50,9 @@ class CustomAdapter (
 
     override fun onBindViewHolder(holder: CustomAdapter.ViewHolder, position: Int) {
         holder.eventTitle.text = data[position].title
-        holder.eventImage.setImageBitmap(convert(data[position].img))
+        val img = data[position].img
+        holder.card.setCardBackgroundColor(Color.parseColor(data[position].paletteImage))
+        Picasso.get().load(img).into(holder.eventImage)
 
         holder.itemView.setOnClickListener{view ->
             val activity = view.context as AppCompatActivity

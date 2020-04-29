@@ -3,23 +3,20 @@ package com.example.fillfeel
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ScrollView
-import androidx.annotation.IdRes
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.fragment_explore.*
 import java.io.IOException
+
 
 /**
  * A simple [Fragment] subclass.
@@ -28,23 +25,20 @@ class ExploreFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var bottomNavigation: BottomNavigationView
+    private val TAG: String = "ExploreFragment"
+    private lateinit var mDatabase: DatabaseReference
 
-    fun getJsonDataFromAsset(context: Context, fileName: String): String? {
-        val jsonString: String
-        try {
-            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-        } catch (ioException: IOException) {
-            ioException.printStackTrace()
-            return null
-        }
-        return jsonString
-    }
+    private lateinit var highlightObj: MutableList<ExploreObject>
+    private lateinit var childObj: MutableList<ExploreObject>
+    private lateinit var elderObj: MutableList<ExploreObject>
+    private lateinit var patientObj: MutableList<ExploreObject>
+    private lateinit var animalObj: MutableList<ExploreObject>
+    private lateinit var environmentObj: MutableList<ExploreObject>
 
     lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 //        auth = FirebaseAuth.getInstance()
 //        val currentUser = auth.currentUser
 //        Log.d("ExploreFragment", currentUser?.email)
@@ -67,83 +61,150 @@ class ExploreFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        //Create Data Array
-        val highlightData :MutableList<ExploreObject> = ArrayList<ExploreObject>()
-        val childData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
-        val elderData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
-        val patientData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
-        val animalData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
-        val envData : MutableList<ExploreObject> = ArrayList<ExploreObject>()
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+        mDatabase.child("events").orderByChild("rate").limitToLast(5)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
 
-        //read json data
-        val jsonFileString = getJsonDataFromAsset(requireContext(), "exploreModel.json")
-        val gson = Gson()
-        val exploreDataType = object : TypeToken<List<ExploreObject>>() {}.type
-        val exploreObj: List<ExploreObject> = gson.fromJson(jsonFileString, exploreDataType)
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    highlightObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            highlightObj.add(elem!!)
+                        }
+                        highlightObj.reverse()
+                        val highlightAdapter = CustomAdapter(highlightObj)
+                        rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        rvlist.setHasFixedSize(true)
+                        rvlist.adapter = highlightAdapter
+                    }
+                }
+            })
 
-        //create object & filled filter data
-        val highlightsObj = exploreObj.sortedWith(compareByDescending({it.rate}))
-        val childObj = exploreObj.filter({it.tag == "Children and youth"})
-        val elderObj = exploreObj.filter({it.tag == "Elderer"})
-        val patientObj = exploreObj.filter({it.tag == "Patient and disabled"})
-        val animalObj = exploreObj.filter({it.tag == "Animal"})
-        val envObj = exploreObj.filter({it.tag == "Environment"})
+        mDatabase.child("events").orderByChild("tag").equalTo("Children and youth")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
 
-        //loop for adding object to the list
-        //in highlight will show only 5 items, others shows all
-        for (item in 1..5) {
-            highlightData.add(highlightsObj[item - 1])
-        }
-        for (item in 1..childObj.size) {
-            childData.add(childObj[item - 1])
-        }
-        for (item in 1..elderObj.size) {
-            elderData.add(elderObj[item - 1])
-        }
-        for (item in 1..patientObj.size) {
-            patientData.add(patientObj[item - 1])
-        }
-        for (item in 1..animalObj.size) {
-            animalData.add(animalObj[item - 1])
-        }
-        for (item in 1..envObj.size) {
-            envData.add(envObj[item - 1])
-        }
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    childObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            childObj.add(elem!!)
+                        }
+                        val childAdapter = miniAdapter(childObj)
+                        child_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        child_rvlist.setHasFixedSize(true)
+                        child_rvlist.adapter = childAdapter
+                    }
+                }
+            })
 
-        //send data to adapter
-        //CustomAdapter is big card_view
-        //miniAdapter is small card_view
-        val highlightAdapter = CustomAdapter(highlightData)
-        val childAdapter = miniAdapter(childData)
-        val elderAdapter = miniAdapter(elderData)
-        val patientAdapter = miniAdapter(patientData)
-        val animalAdapter = miniAdapter(animalData)
-        val envAdapter = miniAdapter(envData)
+        mDatabase.child("events").orderByChild("tag").equalTo("Elderer")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
 
-        //highlight
-        rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvlist.setHasFixedSize(true)
-        rvlist.adapter = highlightAdapter
-        //child
-        child_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        child_rvlist.setHasFixedSize(true)
-        child_rvlist.adapter = childAdapter
-        //elder
-        elder_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        elder_rvlist.setHasFixedSize(true)
-        elder_rvlist.adapter = elderAdapter
-        //patient
-        patient_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        patient_rvlist.setHasFixedSize(true)
-        patient_rvlist.adapter = patientAdapter
-        //animal
-        animal_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        animal_rvlist.setHasFixedSize(true)
-        animal_rvlist.adapter = animalAdapter
-        //env
-        env_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        env_rvlist.setHasFixedSize(true)
-        env_rvlist.adapter = envAdapter
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    elderObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            elderObj.add(elem!!)
+                        }
+                        val elderAdapter = miniAdapter(elderObj)
+                        elder_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        elder_rvlist.setHasFixedSize(true)
+                        elder_rvlist.adapter = elderAdapter
+                    }
+                }
+            })
 
+        mDatabase.child("events").orderByChild("tag").equalTo("Patient and disabled")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    patientObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            patientObj.add(elem!!)
+                        }
+                        val patientAdapter = miniAdapter(patientObj)
+                        patient_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        patient_rvlist.setHasFixedSize(true)
+                        patient_rvlist.adapter = patientAdapter
+                    }
+                }
+            })
+
+        mDatabase.child("events").orderByChild("tag").equalTo("Animal")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    animalObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            animalObj.add(elem!!)
+                        }
+                        val animalAdapter = miniAdapter(animalObj)
+                        animal_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        animal_rvlist.setHasFixedSize(true)
+                        animal_rvlist.adapter = animalAdapter
+                    }
+                }
+            })
+
+        mDatabase.child("events").orderByChild("tag").equalTo("Environment")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    environmentObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            environmentObj.add(elem!!)
+                        }
+                        val enAdapter = miniAdapter(environmentObj)
+                        env_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        env_rvlist.setHasFixedSize(true)
+                        env_rvlist.adapter = enAdapter
+                    }
+                }
+            })
     }
 }
