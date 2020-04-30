@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#000000</color>
     <color name="colorItWhite">#FFFFFF</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorItDark">#1A1A1A</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorSmoke">#F2F2F2</color>
     <color name="colorAccent">#EF6DA0</color>
     <color name="colorDarkSmoke">#4D4D4D</color>

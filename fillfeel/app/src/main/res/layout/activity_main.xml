@@ -19,7 +19,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:logo="@drawable/ic_fillfeel_nav_logo" />
+        app:logo="@drawable/ic_fillfeel_nav_logo"
+        app:itemIconTint="#000000"
+        app:menu="@menu/toolbar_menu"/>
 
     <FrameLayout
         android:layout_width="match_parent"
