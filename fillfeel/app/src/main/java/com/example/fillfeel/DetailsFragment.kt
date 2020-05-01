@@ -16,14 +16,19 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.temporal.ChronoUnit
-import javax.xml.datatype.DatatypeConstants.DAYS
+//import java.time.Instant
+//import java.time.LocalDateTime
+//import java.time.ZoneId
+//import java.time.temporal.ChronoUnit
+//import javax.xml.datatype.DatatypeConstants.DAYS
 import kotlin.math.roundToInt
 
 
@@ -37,6 +42,12 @@ class DetailsFragment : Fragment() {
     private lateinit var eventId: String
     private lateinit var eventImg: String
     private lateinit var title: String
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+
+    lateinit var detailsSaved: ImageView
+    var isSaved: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,14 +64,58 @@ class DetailsFragment : Fragment() {
         eventImg = bundle?.getString("eventImg", "").toString()
     }
 
+    @SuppressLint("ResourceType")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val bookmark: ImageView = view!!.findViewById(R.id.detailsBk)
-        bookmark.setColorFilter(Color.parseColor("#B3B3B3"))
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser!!
 
-        bookmark.setOnClickListener{view ->
-            Log.d(TAG, view.backgroundTintMode.toString())
+        val colorQuoteWhite = getResources().getString(R.color.colorQuoteWhite);
+        val colorPrimaryPink = getResources().getString(R.color.colorPrimaryPink);
+
+        val detailsSaved: ImageView = view!!.findViewById(R.id.detailsSaved)
+        detailsSaved.setColorFilter(Color.parseColor(colorQuoteWhite))
+
+        mDatabase.child("users").child(user.uid).child("savedEvent").child(eventId)
+            .addValueEventListener(object: ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    Log.e(TAG, p0.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        detailsSaved.setColorFilter(Color.parseColor(colorPrimaryPink))
+                        isSaved = true
+                    } else {
+                        detailsSaved.setColorFilter(Color.parseColor(colorQuoteWhite))
+                        isSaved = false
+                    }
+                }
+            })
+
+        detailsSaved.setOnClickListener{view ->
+            if (isSaved) {
+                // remove from savedEvent
+                mDatabase
+                    .child("users")
+                    .child(user.uid)
+                    .child("savedEvent")
+                    .child(eventId).setValue(null)
+//                Snackbar.make(view, "Saved event has been remove", Snackbar.LENGTH_LONG).show();
+            } else {
+                // push into savedEvent
+                val childUpdates: MutableMap<String, Any> = mutableMapOf()
+                childUpdates.put(eventId+"/timestamp", System.currentTimeMillis())
+                mDatabase
+                    .child("users")
+                    .child(user.uid)
+                    .child("savedEvent")
+                    .updateChildren(childUpdates)
+
+//                Snackbar.make(view, "Event has been saved", Snackbar.LENGTH_LONG).show();
+            }
         }
 
         val joinButon: AppCompatButton = view!!.findViewById(R.id.joinButton)
@@ -121,46 +176,46 @@ class DetailsFragment : Fragment() {
                             currentBackers.text = elem.backers.toString()
                         }
 
-                        val createDate = elem?.timestamps?.let {
-                            Instant.ofEpochSecond(it)
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDateTime()
-                        }
-                        val endDate = elem?.period?.let {
-                            Instant.ofEpochSecond(it)
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDateTime()
-                        }
-                        val nowDate = LocalDateTime.now()
+//                        val createDate = elem?.timestamps?.let {
+//                            Instant.ofEpochSecond(it)
+//                                .atZone(ZoneId.systemDefault())
+//                                .toLocalDateTime()
+//                        }
+//                        val endDate = elem?.period?.let {
+//                            Instant.ofEpochSecond(it)
+//                                .atZone(ZoneId.systemDefault())
+//                                .toLocalDateTime()
+//                        }
+//                        val nowDate = LocalDateTime.now()
 
                         val periodDate: TextView = view!!.findViewById(R.id.detailsPeriodDate)
                         val daysToGo: TextView = view!!.findViewById(R.id.detailsDaysToGo)
 
-                        if (endDate?.isAfter(nowDate)!!) {
-                            if (createDate != null) {
-                                if (endDate != null) {
-                                    periodDate.text = (endDate.monthValue - createDate.monthValue).toString() + " months"
-                                }
-                            }
-                        } else {
-                            periodDate.text = "Closed"
-                        }
+//                        if (endDate?.isAfter(nowDate)!!) {
+//                            if (createDate != null) {
+//                                if (endDate != null) {
+//                                    periodDate.text = (endDate.monthValue - createDate.monthValue).toString() + " months"
+//                                }
+//                            }
+//                        } else {
+//                            periodDate.text = "Closed"
+//                        }
 
-                        val daysBetween: Long = ChronoUnit.DAYS.between(nowDate, endDate)
-                        daysToGo.text = daysBetween.toString()
+//                        val daysBetween: Long = ChronoUnit.DAYS.between(nowDate, endDate)
+//                        daysToGo.text = daysBetween.toString()
 
                         val detailsTitle: TextView = view!!.findViewById(R.id.detailsTitle)
-                        detailsTitle.text = elem.title
-                        title = elem.title.toString()
+                        detailsTitle.text = elem?.title
+                        title = elem?.title.toString()
 
                         val detailsEventDetail: TextView = view!!.findViewById(R.id.detailsEventDetail)
-                        detailsEventDetail.text = elem.details
+                        detailsEventDetail.text = elem?.details
 
                         val detailsOverview: TextView = view!!.findViewById(R.id.detailsOverview)
-                        detailsOverview.text = elem.overview
+                        detailsOverview.text = elem?.overview
 
                         val detailsPlan: TextView = view!!.findViewById(R.id.detailsPlan)
-                        detailsPlan.text = elem.plan
+                        detailsPlan.text = elem?.plan
                     }
                 }
             })
