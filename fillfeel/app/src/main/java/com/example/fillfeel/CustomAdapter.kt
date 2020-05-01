@@ -60,6 +60,7 @@ class CustomAdapter (
 
             val bundle = Bundle()
             bundle.putString("eventId", data[position].id.toString())
+            bundle.putString("eventImg", img)
             fragment.setArguments(bundle)
 
             fragment.arguments = bundle

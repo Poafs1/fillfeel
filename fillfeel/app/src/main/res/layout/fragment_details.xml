@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:paddingTop="25dp"
             android:paddingRight="15dp"
             android:paddingBottom="50dp"
             android:scrollbars="none">
@@ -25,7 +24,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="25dp"
+                android:paddingBottom="100dp">
 
                 <TextView
                     android:id="@+id/detailsHeaderTitle"
@@ -89,10 +90,10 @@
 
                         <ImageView
                             android:id="@+id/detailsCardImg"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="top"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="fitXY" />
                         <!--    android:src="@drawable/projectimg"-->
 
                     </androidx.cardview.widget.CardView>
@@ -138,6 +139,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenirnext_medium"
+                            android:text="US$"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp" />
 
@@ -146,6 +148,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenirnext_medium"
+                            android:text="US$"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -160,6 +163,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenirnext_medium"
+                            android:text="0"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp" />
 
@@ -178,10 +182,11 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/detailsDayLeft"
+                            android:id="@+id/detailsDaysToGo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenirnext_medium"
+                            android:text="0"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp" />
 
@@ -195,8 +200,8 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/button2"
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/joinButton"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="25dp"
@@ -206,6 +211,103 @@
                     android:textAllCaps="false"
                     android:textColor="@color/colorItWhite"
                     android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/detailsTitle"
+                            android:layout_width="231dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/sukhumvit_bold"
+                            android:paddingRight="25dp"
+                            android:textColor="@color/colorItDark"
+                            android:textSize="24sp" />
+
+                        <ImageView
+                            android:id="@+id/detailsBk"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_weight="0"
+                            android:width="24dp"
+                            android:height="24dp"
+                            android:src="@drawable/ic_bookmark_24px" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/detailsEventDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/sukhumvit_text"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="18sp"
+                        app:lineHeight="35dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/detailsOverviewTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirnext_medium"
+                        android:text="Overview"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/detailsOverview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/sukhumvit_text"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="18sp"
+                        app:lineHeight="35dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/detailsPlanTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirnext_medium"
+                        android:text="Plan"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/detailsPlan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/sukhumvit_text"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="18sp"
+                        app:lineHeight="35dp" />
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

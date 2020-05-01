@@ -12,8 +12,8 @@
         android:title="@string/nav_saved"
         android:id="@+id/bottomNavigationSavedMenuId"
         android:icon="@drawable/ic_bookmark_24px"/>
-    <item
-        android:title="Profile"
-        android:id="@+id/bottomNavigationProfileMenuId"
-        android:icon="@drawable/ic_person_24px"/>
+<!--    <item-->
+<!--        android:title="Profile"-->
+<!--        android:id="@+id/bottomNavigationProfileMenuId"-->
+<!--        android:icon="@drawable/ic_person_24px"/>-->
 </menu>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_behavior="com.google.android.meterial.BottomSheet">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/border_settings"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenirnext_demibold"
+            android:text="Settings"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/accountSetting"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_account_circle_24px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="@font/avenirnext_demibold"
+            android:text="Manage Account"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_weight="1"
+            android:scaleType="fitEnd"
+            android:tint="@color/colorQuoteWhite"
+            app:srcCompat="@drawable/ic_arrow_forward_ios_24px" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/changeLanguageSetting"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_g_translate_24px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="@font/avenirnext_demibold"
+            android:text="Change Language"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_weight="1"
+            android:scaleType="fitEnd"
+            android:tint="@color/colorQuoteWhite"
+            app:srcCompat="@drawable/ic_arrow_forward_ios_24px" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/paymentSetting"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_weight="0"
+            app:srcCompat="@drawable/ic_payment_24px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="@font/avenirnext_demibold"
+            android:text="Payment Details"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_weight="1"
+            android:scaleType="fitEnd"
+            android:tint="@color/colorQuoteWhite"
+            app:srcCompat="@drawable/ic_arrow_forward_ios_24px" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/signoutSetting"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginLeft="44dp"
+            android:fontFamily="@font/avenirnext_medium"
+            android:text="Sign Out"
+            android:textColor="@color/colorGrey"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
