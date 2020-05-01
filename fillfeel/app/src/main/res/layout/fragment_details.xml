@@ -159,7 +159,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/detailsBuckers"
+                            android:id="@+id/detailsBackers"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenirnext_medium"
@@ -171,7 +171,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenirnext_medium"
-                            android:text="Buckers"
+                            android:text="Backers"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp" />
                     </LinearLayout>

@@ -113,12 +113,12 @@ class DetailsFragment : Fragment() {
 
                         val eventGoal: TextView = view!!.findViewById(R.id.detailsEventGoal)
                         if (elem != null) {
-                            eventGoal.text = "US$ " + elem.goal?.roundToInt().toString()
+                            eventGoal.text = "goal: US$ " + elem.goal?.roundToInt().toString()
                         }
 
-                        val currentBuckers: TextView = view!!.findViewById(R.id.detailsBuckers)
+                        val currentBackers: TextView = view!!.findViewById(R.id.detailsBackers)
                         if (elem != null) {
-                            currentBuckers.text = elem.backers.toString()
+                            currentBackers.text = elem.backers.toString()
                         }
 
                         val createDate = elem?.timestamps?.let {
