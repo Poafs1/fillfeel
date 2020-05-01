@@ -8,10 +8,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.*
@@ -33,6 +36,7 @@ class DetailsFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var eventId: String
     private lateinit var eventImg: String
+    private lateinit var title: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +61,20 @@ class DetailsFragment : Fragment() {
 
         bookmark.setOnClickListener{view ->
             Log.d(TAG, view.backgroundTintMode.toString())
+        }
+
+        val joinButon: AppCompatButton = view!!.findViewById(R.id.joinButton)
+        joinButon.setOnClickListener{view ->
+            val activity = view.context as AppCompatActivity
+            val fragment = DonateFragment()
+
+            val bundle = Bundle()
+            bundle.putString("eventId", eventId)
+            bundle.putString("title", title)
+            fragment.setArguments(bundle)
+
+            activity.getSupportFragmentManager()
+                .beginTransaction().replace(R.id.root_layout, fragment).addToBackStack(null).commit();
         }
 
         mDatabase = FirebaseDatabase.getInstance().getReference()
@@ -133,6 +151,7 @@ class DetailsFragment : Fragment() {
 
                         val detailsTitle: TextView = view!!.findViewById(R.id.detailsTitle)
                         detailsTitle.text = elem.title
+                        title = elem.title.toString()
 
                         val detailsEventDetail: TextView = view!!.findViewById(R.id.detailsEventDetail)
                         detailsEventDetail.text = elem.details
