@@ -89,124 +89,124 @@ class ExploreFragment : Fragment() {
                 }
             })
 
-//        mDatabase.child("events").orderByChild("tag").equalTo("Children and youth")
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onCancelled(databaseError: DatabaseError) {
-//                    Log.e(TAG, databaseError.message)
-//                }
-//
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    childObj = mutableListOf()
-//                    if (dataSnapshot!!.exists()) {
-//                        for(e in dataSnapshot.children) {
-//                            val elem = e.getValue(ExploreObject::class.java)
-//                            if (elem != null) {
-//                                elem.id = e.getKey()
-//                            }
-//                            childObj.add(elem!!)
-//                        }
-//                        val childAdapter = miniAdapter(childObj)
-//                        child_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//                        child_rvlist.setHasFixedSize(true)
-//                        child_rvlist.adapter = childAdapter
-//                    }
-//                }
-//            })
-//
-//        mDatabase.child("events").orderByChild("tag").equalTo("Elderer")
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onCancelled(databaseError: DatabaseError) {
-//                    Log.e(TAG, databaseError.message)
-//                }
-//
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    elderObj = mutableListOf()
-//                    if (dataSnapshot!!.exists()) {
-//                        for(e in dataSnapshot.children) {
-//                            val elem = e.getValue(ExploreObject::class.java)
-//                            if (elem != null) {
-//                                elem.id = e.getKey()
-//                            }
-//                            elderObj.add(elem!!)
-//                        }
-//                        val elderAdapter = miniAdapter(elderObj)
-//                        elder_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//                        elder_rvlist.setHasFixedSize(true)
-//                        elder_rvlist.adapter = elderAdapter
-//                    }
-//                }
-//            })
-//
-//        mDatabase.child("events").orderByChild("tag").equalTo("Patient and disabled")
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onCancelled(databaseError: DatabaseError) {
-//                    Log.e(TAG, databaseError.message)
-//                }
-//
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    patientObj = mutableListOf()
-//                    if (dataSnapshot!!.exists()) {
-//                        for(e in dataSnapshot.children) {
-//                            val elem = e.getValue(ExploreObject::class.java)
-//                            if (elem != null) {
-//                                elem.id = e.getKey()
-//                            }
-//                            patientObj.add(elem!!)
-//                        }
-//                        val patientAdapter = miniAdapter(patientObj)
-//                        patient_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//                        patient_rvlist.setHasFixedSize(true)
-//                        patient_rvlist.adapter = patientAdapter
-//                    }
-//                }
-//            })
-//
-//        mDatabase.child("events").orderByChild("tag").equalTo("Animal")
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onCancelled(databaseError: DatabaseError) {
-//                    Log.e(TAG, databaseError.message)
-//                }
-//
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    animalObj = mutableListOf()
-//                    if (dataSnapshot!!.exists()) {
-//                        for(e in dataSnapshot.children) {
-//                            val elem = e.getValue(ExploreObject::class.java)
-//                            if (elem != null) {
-//                                elem.id = e.getKey()
-//                            }
-//                            animalObj.add(elem!!)
-//                        }
-//                        val animalAdapter = miniAdapter(animalObj)
-//                        animal_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//                        animal_rvlist.setHasFixedSize(true)
-//                        animal_rvlist.adapter = animalAdapter
-//                    }
-//                }
-//            })
-//
-//        mDatabase.child("events").orderByChild("tag").equalTo("Environment")
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onCancelled(databaseError: DatabaseError) {
-//                    Log.e(TAG, databaseError.message)
-//                }
-//
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    environmentObj = mutableListOf()
-//                    if (dataSnapshot!!.exists()) {
-//                        for(e in dataSnapshot.children) {
-//                            val elem = e.getValue(ExploreObject::class.java)
-//                            if (elem != null) {
-//                                elem.id = e.getKey()
-//                            }
-//                            environmentObj.add(elem!!)
-//                        }
-//                        val enAdapter = miniAdapter(environmentObj)
-//                        env_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//                        env_rvlist.setHasFixedSize(true)
-//                        env_rvlist.adapter = enAdapter
-//                    }
-//                }
-//            })
+        mDatabase.child("events").orderByChild("tag").equalTo("Children and youth")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    childObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            childObj.add(elem!!)
+                        }
+                        val childAdapter = miniAdapter(childObj)
+                        child_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        child_rvlist.setHasFixedSize(true)
+                        child_rvlist.adapter = childAdapter
+                    }
+                }
+            })
+
+        mDatabase.child("events").orderByChild("tag").equalTo("Elderer")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    elderObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            elderObj.add(elem!!)
+                        }
+                        val elderAdapter = miniAdapter(elderObj)
+                        elder_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        elder_rvlist.setHasFixedSize(true)
+                        elder_rvlist.adapter = elderAdapter
+                    }
+                }
+            })
+
+        mDatabase.child("events").orderByChild("tag").equalTo("Patient and disabled")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    patientObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            patientObj.add(elem!!)
+                        }
+                        val patientAdapter = miniAdapter(patientObj)
+                        patient_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        patient_rvlist.setHasFixedSize(true)
+                        patient_rvlist.adapter = patientAdapter
+                    }
+                }
+            })
+
+        mDatabase.child("events").orderByChild("tag").equalTo("Animal")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    animalObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            animalObj.add(elem!!)
+                        }
+                        val animalAdapter = miniAdapter(animalObj)
+                        animal_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        animal_rvlist.setHasFixedSize(true)
+                        animal_rvlist.adapter = animalAdapter
+                    }
+                }
+            })
+
+        mDatabase.child("events").orderByChild("tag").equalTo("Environment")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    environmentObj = mutableListOf()
+                    if (dataSnapshot!!.exists()) {
+                        for(e in dataSnapshot.children) {
+                            val elem = e.getValue(ExploreObject::class.java)
+                            if (elem != null) {
+                                elem.id = e.getKey()
+                            }
+                            environmentObj.add(elem!!)
+                        }
+                        val enAdapter = miniAdapter(environmentObj)
+                        env_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                        env_rvlist.setHasFixedSize(true)
+                        env_rvlist.adapter = enAdapter
+                    }
+                }
+            })
     }
 }

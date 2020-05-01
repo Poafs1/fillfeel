@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -19,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase
  * A simple [Fragment] subclass.
  */
 class PaymentFragment : Fragment() {
+    private lateinit var mDatabase: DatabaseReference
     lateinit var cardnumber: TextInputEditText;
     lateinit var cardholder: TextInputEditText;
     lateinit var expdate: TextInputEditText;
@@ -35,6 +35,8 @@ class PaymentFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        mDatabase = FirebaseDatabase.getInstance().getReference()
 
         cardnumber = view!!.findViewById(R.id.cardnumber)
         cardnumber.addTextChangedListener(CreditCardTextFormatter())
@@ -61,15 +63,20 @@ class PaymentFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, start: Int, removed: Int, added: Int) {}
         })
 
-//        cardholder = view!!.findViewById(R.id.cardholder)
-//        cvv = view!!.findViewById(R.id.cvv)
-//
-//        val savePayment: AppCompatButton = view!!.findViewById(R.id.savePaymentTextField)
-//        savePayment.setOnClickListener { view ->
-//            val postValues: HashMap<String, Any> = HashMap()
-//            postValues["cardNumber"] = cardnumber.text.toString()
-//            postValues["cardHolder"] = cardholder.text.toString()
-//            postValues["expiryDate"] = expdate.text.toString()
-//        }
+        cardholder = view!!.findViewById(R.id.cardholder)
+        cvv = view!!.findViewById(R.id.cvv)
+
+        val savePayment: AppCompatButton = view!!.findViewById(R.id.savePaymentTextField)
+        savePayment.setOnClickListener { view ->
+            val postValues: HashMap<String, Any> = HashMap()
+            postValues["cardNumber"] = cardnumber.text.toString()
+            postValues["cardHolder"] = cardholder.text.toString()
+            postValues["expiryDate"] = expdate.text.toString()
+
+            mDatabase.child("users")
+                .child("klua")
+                .push()
+                .setValue("helloworld")
+        }
     }
 }
