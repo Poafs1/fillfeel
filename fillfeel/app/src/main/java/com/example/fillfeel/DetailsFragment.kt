@@ -24,11 +24,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
-//import java.time.Instant
-//import java.time.LocalDateTime
-//import java.time.ZoneId
-//import java.time.temporal.ChronoUnit
-//import javax.xml.datatype.DatatypeConstants.DAYS
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.temporal.ChronoUnit
+import javax.xml.datatype.DatatypeConstants.DAYS
 import kotlin.math.roundToInt
 
 
@@ -118,8 +118,8 @@ class DetailsFragment : Fragment() {
             }
         }
 
-        val joinButon: AppCompatButton = view!!.findViewById(R.id.joinButton)
-        joinButon.setOnClickListener{view ->
+        val joinButton: AppCompatButton = view!!.findViewById(R.id.joinButton)
+        joinButton.setOnClickListener{view ->
             val activity = view.context as AppCompatActivity
             val fragment = DonateFragment()
 
@@ -176,33 +176,33 @@ class DetailsFragment : Fragment() {
                             currentBackers.text = elem.backers.toString()
                         }
 
-//                        val createDate = elem?.timestamps?.let {
-//                            Instant.ofEpochSecond(it)
-//                                .atZone(ZoneId.systemDefault())
-//                                .toLocalDateTime()
-//                        }
-//                        val endDate = elem?.period?.let {
-//                            Instant.ofEpochSecond(it)
-//                                .atZone(ZoneId.systemDefault())
-//                                .toLocalDateTime()
-//                        }
-//                        val nowDate = LocalDateTime.now()
+                        val createDate = elem?.timestamps?.let {
+                            Instant.ofEpochSecond(it)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime()
+                        }
+                        val endDate = elem?.period?.let {
+                            Instant.ofEpochSecond(it)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime()
+                        }
+                        val nowDate = LocalDateTime.now()
 
                         val periodDate: TextView = view!!.findViewById(R.id.detailsPeriodDate)
                         val daysToGo: TextView = view!!.findViewById(R.id.detailsDaysToGo)
 
-//                        if (endDate?.isAfter(nowDate)!!) {
-//                            if (createDate != null) {
-//                                if (endDate != null) {
-//                                    periodDate.text = (endDate.monthValue - createDate.monthValue).toString() + " months"
-//                                }
-//                            }
-//                        } else {
-//                            periodDate.text = "Closed"
-//                        }
+                        if (endDate?.isAfter(nowDate)!!) {
+                            if (createDate != null) {
+                                if (endDate != null) {
+                                    periodDate.text = (endDate.monthValue - createDate.monthValue).toString() + " months"
+                                }
+                            }
+                        } else {
+                            periodDate.text = "Closed"
+                        }
 
-//                        val daysBetween: Long = ChronoUnit.DAYS.between(nowDate, endDate)
-//                        daysToGo.text = daysBetween.toString()
+                        val daysBetween: Long = ChronoUnit.DAYS.between(nowDate, endDate)
+                        daysToGo.text = daysBetween.toString()
 
                         val detailsTitle: TextView = view!!.findViewById(R.id.detailsTitle)
                         detailsTitle.text = elem?.title
