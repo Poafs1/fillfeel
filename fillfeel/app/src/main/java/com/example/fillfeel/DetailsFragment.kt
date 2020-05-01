@@ -30,6 +30,7 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.temporal.ChronoUnit
 import javax.xml.datatype.DatatypeConstants.DAYS
 import kotlin.math.roundToInt
+import kotlin.properties.Delegates
 
 
 /**
@@ -42,6 +43,11 @@ class DetailsFragment : Fragment() {
     private lateinit var eventId: String
     private lateinit var eventImg: String
     private lateinit var title: String
+
+    lateinit var savedCurrent: String
+    lateinit var savedGoal: String
+    lateinit var savedBacker: String
+    var savedEndDate by Delegates.notNull<Long>()
 
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
@@ -95,6 +101,7 @@ class DetailsFragment : Fragment() {
                 }
             })
 
+        //saveButton
         detailsSaved.setOnClickListener{view ->
             if (isSaved) {
                 // remove from savedEvent
@@ -107,7 +114,11 @@ class DetailsFragment : Fragment() {
             } else {
                 // push into savedEvent
                 val childUpdates: MutableMap<String, Any> = mutableMapOf()
-                childUpdates.put(eventId+"/timestamp", System.currentTimeMillis())
+                childUpdates.put(eventId+"/current", savedCurrent)
+                childUpdates.put(eventId+"/goal", savedGoal)
+                childUpdates.put(eventId+"/backer", savedBacker)
+                childUpdates.put(eventId+"/endDate", savedEndDate)
+//                childUpdates.put(eventId+"/timestamp", System.currentTimeMillis())
                 mDatabase
                     .child("users")
                     .child(user.uid)
@@ -164,16 +175,19 @@ class DetailsFragment : Fragment() {
                         val currentDonated: TextView = view!!.findViewById(R.id.detailsEventCurrentDonated)
                         if (elem != null) {
                             currentDonated.text = "US$ " + elem.donate.toString()
+                            savedCurrent = elem.donate.toString()
                         }
 
                         val eventGoal: TextView = view!!.findViewById(R.id.detailsEventGoal)
                         if (elem != null) {
                             eventGoal.text = "goal: US$ " + elem.goal?.roundToInt().toString()
+                            savedGoal = elem.goal?.roundToInt().toString()
                         }
 
                         val currentBackers: TextView = view!!.findViewById(R.id.detailsBackers)
                         if (elem != null) {
                             currentBackers.text = elem.backers.toString()
+                            savedBacker = elem.backers.toString()
                         }
 
                         val createDate = elem?.timestamps?.let {
@@ -187,6 +201,7 @@ class DetailsFragment : Fragment() {
                                 .toLocalDateTime()
                         }
                         val nowDate = LocalDateTime.now()
+                        savedEndDate = elem?.period!!
 
                         val periodDate: TextView = view!!.findViewById(R.id.detailsPeriodDate)
                         val daysToGo: TextView = view!!.findViewById(R.id.detailsDaysToGo)
