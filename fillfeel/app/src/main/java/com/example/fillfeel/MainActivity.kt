@@ -58,9 +58,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//        val eventsRef = Firebase.database.getReference("events")
-//        eventsRef.keepSynced(true)
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        val eventsRef = Firebase.database.getReference("events")
+        eventsRef.keepSynced(true)
 
         setContentView(R.layout.activity_main)
         val fragmentManager: FragmentManager = supportFragmentManager
