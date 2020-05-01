@@ -35,6 +35,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.android.synthetic.main.bottom_sheet_layout.view.*
 import java.util.*
 
@@ -56,6 +57,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AndroidThreeTen.init(this)
 
         // Firebase Realtime Database for Offline Mode and keep it refresh in some table
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
