@@ -234,7 +234,7 @@
                             android:textSize="24sp" />
 
                         <ImageView
-                            android:id="@+id/detailsBk"
+                            android:id="@+id/detailsSaved"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
                             android:layout_weight="0"

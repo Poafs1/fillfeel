@@ -40,7 +40,6 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-
     private val TAG: String = "MainActivity"
     private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -58,9 +57,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Firebase Realtime Database for Offline Mode and keep it refresh in some table
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         val eventsRef = Firebase.database.getReference("events")
+        val usersRef = Firebase.database.getReference("users")
         eventsRef.keepSynced(true)
+        usersRef.keepSynced(true)
 
         setContentView(R.layout.activity_main)
         val fragmentManager: FragmentManager = supportFragmentManager
@@ -70,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         authenticationPage = findViewById(R.id.authentication_page)
         mCallbackManager = CallbackManager.Factory.create()
 
+        // Firebase Authentication Init
         auth = FirebaseAuth.getInstance()
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -80,31 +83,32 @@ class MainActivity : AppCompatActivity() {
         LoginManager.getInstance().registerCallback(mCallbackManager, object :
             FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
-//                Log.d(TAG, "facebook:onSuccess:$loginResult")
+                Log.d(TAG, "facebook:onSuccess:$loginResult")
                 handleFacebookAccessToken(loginResult.accessToken)
             }
 
             override fun onCancel() {
-//                Log.d(TAG, "facebook:onCancel")
-                // ...
+                Log.d(TAG, "facebook:onCancel")
             }
 
             override fun onError(error: FacebookException) {
-//                Log.d(TAG, "facebook:onError", error)
-                // ...
+                Log.d(TAG, "facebook:onError", error)
             }
         })
 
+        // Hidden Toolbar, Bottom Navigation Bar, and Logo in Sign In Page
         handleToolbar()
         handleBottomNavigationBar()
         handleLogo()
 
+        // On Click Listener for Google Sign In Method Button
         val googleButton: Button = findViewById(R.id.google_button)
         googleButton.setOnClickListener{view ->
             method = "google"
             signIn()
         }
 
+        // On Click Listener for Facebook Sign In Method Button
         val facebookButton: Button = findViewById(R.id.facebook_button)
         facebookButton.setOnClickListener{view ->
             method = "facebook"
@@ -117,6 +121,15 @@ class MainActivity : AppCompatActivity() {
         handleBottomSheetDialog(currentFragment)
     }
 
+    /*
+    * Handle Bottom Sheet Dialog
+    *
+    * It's floating fragment use to commit fragment transaction to:
+    * @Account_Fragment
+    * @Change_Language_Fragment
+    * @Payment_Fragment
+    * @Sign_Out
+     */
     private fun handleBottomSheetDialog(currentFragment: Fragment?) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
@@ -155,6 +168,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*
+    * Handle NightMode for Tracking Device Theme Mode
+    *
+    * NightMode can change automatically, however, some part of Android Application
+    * For example, Device status bar. It has to change the color programmatically
+     */
     private fun handleNighMode(nightMode: Int) {
         when(nightMode) {
             // Nigh Mode OFF
@@ -171,7 +190,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-//
+
     private fun handleToolbar() {
         mTopToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mTopToolbar)
@@ -193,10 +212,10 @@ class MainActivity : AppCompatActivity() {
         )
         textviewLogo.paint.setShader(shader)
     }
-//
+
+    // Update start ui after sign in success
     private fun updateUI(account: FirebaseUser?) {
         val fragment = ExploreFragment()
-//        val fragment = DetailsFragment()
 
         authenticationPage.visibility = View.GONE
         supportActionBar?.show()
@@ -208,6 +227,7 @@ class MainActivity : AppCompatActivity() {
             .commit();
     }
 
+    // Update start ui after sign out
     private fun startUI() {
         authenticationPage.visibility = View.VISIBLE
         supportActionBar?.hide()
@@ -217,7 +237,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
     }
-//
+
+    /*
+    * Bottom Navigation Bar Listener for Commit Transaction to Other Fragment
+    *
+    * @ExploreFragment
+    * @HistoryFragment
+    * @SavedFragment
+    * @ProfileFragment has been removed and change it to settings bottom sheet dialog fragment
+     */
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val fragmentManager: FragmentManager = supportFragmentManager
         val currentFragment: Fragment? =
@@ -259,6 +287,12 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /*
+    * Toolbar Listener for Commit Transaction to Other Fragment
+    *
+    * @ AddEventFragment
+    * @ Bottom Sheet Dialog Fragment
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id: Int = item.getItemId()
         val fragmentManager: FragmentManager = supportFragmentManager
@@ -273,6 +307,7 @@ class MainActivity : AppCompatActivity() {
             }
             return true
         } else if (id == R.id.settings_button) {
+            // open bottom sheet dialog fragment
             bottomSheetDialog.show()
             return true
         }
@@ -296,19 +331,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         if (method != "google") return
-//        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-//                    Log.d(TAG, "signInWithCredential:success")
+                    Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
-//                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
 //                    updateUI(null)
                 }
             }
@@ -316,21 +351,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleFacebookAccessToken(token: AccessToken) {
         if (method != "facebook") return
-//        Log.d(TAG, "handleFacebookAccessToken:$token")
+        Log.d(TAG, "handleFacebookAccessToken:$token")
 
         val credential = FacebookAuthProvider.getCredential(token.token)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-//                    Log.d(TAG, "signInWithCredential:success")
+                    Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
-//                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-//                    Toast.makeText(baseContext, "Authentication failed.",
-//                        Toast.LENGTH_SHORT).show()
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
 //                    updateUI(null)
                 }
             }
@@ -351,7 +384,7 @@ class MainActivity : AppCompatActivity() {
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-//                Log.w(TAG, "Google sign in failed", e)
+                Log.w(TAG, "Google sign in failed", e)
                 // ...
             }
         }

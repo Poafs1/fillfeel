@@ -71,7 +71,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/firstNameTextField"
+                    android:id="@+id/accountFNameLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,13 +82,15 @@
                     app:hintTextColor="@color/colorPrimaryPink">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/accountFName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/lastNameTextField"
+                    android:id="@+id/accountLNameLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,32 +101,36 @@
                     app:hintTextColor="@color/colorPrimaryPink">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/accountLName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/bdTextField"
+                    android:id="@+id/accountBdLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:hint="mm/dd/yyyy"
+                    android:hint="MM/DD/YYYY"
                     app:boxStrokeColor="@color/colorPrimaryPink"
                     app:hintTextColor="@color/colorPrimaryPink">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/bd"
+                        android:id="@+id/accountBd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
                         android:digits="1234567890/"
                         android:maxLength="10"
                         android:inputType="date" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/accountGenderLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -134,7 +140,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
                     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                        android:id="@+id/gender"
+                        android:id="@+id/accountGender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
@@ -142,7 +148,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/phoneTextField"
+                    android:id="@+id/accountPhoneLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -155,6 +161,7 @@
                     app:hintTextColor="@color/colorPrimaryPink">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/accountPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
