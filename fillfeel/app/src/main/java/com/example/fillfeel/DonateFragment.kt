@@ -27,6 +27,8 @@ class DonateFragment : Fragment() {
 
     lateinit var eventId: String
     lateinit var title: String
+    lateinit var eventBackers: Int
+    lateinit var endDate: Long
 
     lateinit var donateTitle: TextView
     lateinit var donateFNameLayout: TextInputLayout
@@ -132,7 +134,7 @@ class DonateFragment : Fragment() {
         visualCredit = view!!.findViewById(R.id.donateVisualCredit)
         visualCardNumber = view!!.findViewById(R.id.donateVisualCardNumber)
         visualExpDate = view!!.findViewById(R.id.donateVisualExpDate)
-        saveButton = view!!.findViewById(R.id.saveDonateTextField)
+        saveButton = view!!.findViewById(R.id.saveDonateButton)
 
         donateTitle.text = title
 
@@ -239,6 +241,9 @@ class DonateFragment : Fragment() {
                         if (p == null) {
                             return Transaction.success(mutableData)
                         }
+                        eventBackers = p.backers!!
+                        endDate = p.period!!
+
                         p.backers = p.backers?.plus(1)
                         p.donate = p.donate?.plus(amount)
                         mutableData.value = p
@@ -261,7 +266,7 @@ class DonateFragment : Fragment() {
                 val eventUpdate: HashMap<String, Any> = HashMap()
                 eventUpdate.put("uid", user.uid)
                 eventUpdate.put("amount", amount)
-                eventUpdate.put("timestamp", instant.toEpochMilli())
+                eventUpdate.put("timestamp", instant.epochSecond)
 
                 mDatabase
                     .child("events")
@@ -270,6 +275,11 @@ class DonateFragment : Fragment() {
 
                 // Insert historyEvent into users
                 val userUpdate: HashMap<String, Any> = HashMap()
+                userUpdate.put("eid", eventId)
+                userUpdate.put("amount", amount)
+                userUpdate.put("timestamp", instant.epochSecond)
+                userUpdate.put("backers", eventBackers)
+                userUpdate.put("endDate", endDate)
 
                 mDatabase
                     .child("users")
