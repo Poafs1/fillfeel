@@ -96,6 +96,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
+                            android:drawableRight="@drawable/ic_calendar_today_24px"
+                            android:drawableTint="@color/colorQuoteDark"
+                            android:focusable="false"
+                            android:cursorVisible="false"
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,6 +145,160 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirnext_medium"
+                        android:text="Cover Image"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirnext_medium"
+                        android:text="Details"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="24sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventDetailsLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        app:boxStrokeColor="@color/colorPrimaryPink"
+                        app:hintTextColor="@color/colorPrimaryPink">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addEventDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp"
+                            android:ellipsize="start"
+                            android:gravity="clip_horizontal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirnext_medium"
+                        android:text="Overview"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="24sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventOverviewLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        app:boxStrokeColor="@color/colorPrimaryPink"
+                        app:hintTextColor="@color/colorPrimaryPink">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addEventOverview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp"
+                            android:ellipsize="start"
+                            android:gravity="clip_horizontal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirnext_medium"
+                        android:text="Plan"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="24sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventPlanLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        app:boxStrokeColor="@color/colorPrimaryPink"
+                        app:hintTextColor="@color/colorPrimaryPink">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addEventPlan"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="5dp"
+                            android:ellipsize="start"
+                            android:gravity="clip_horizontal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirnext_medium"
+                        android:text="Account Details"
+                        android:textColor="@color/colorItDark"
+                        android:textSize="24sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventAccountNumberLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Account Number"
+                        app:boxStrokeColor="@color/colorPrimaryPink"
+                        app:hintTextColor="@color/colorPrimaryPink">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addEventAccountNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/saveAddEventTextField"
@@ -149,7 +307,7 @@
                     android:layout_marginTop="25dp"
                     android:background="@drawable/button_gradient"
                     android:fontFamily="@font/avenirnext_medium"
-                    android:text="Save"
+                    android:text="Create"
                     android:textAllCaps="false"
                     android:textColor="@color/colorItWhite"
                     android:textSize="14sp" />

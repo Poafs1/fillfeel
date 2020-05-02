@@ -8,9 +8,15 @@
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowAnimationStyle">@null</item>
-
         <item name="colorAccent">@color/colorPrimaryPink</item>
         <item name="android:textColorPrimaryDisableOnly">@color/colorQuoteDark</item>
+
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerTheme.ButtonBarNegativeButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerTheme.ButtonBarNegativeButtonStyle</item>
+    </style>
+
+    <style name="DatePickerTheme.ButtonBarNegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorPrimaryPink</item>
     </style>
 
     <style name="Widget.BottomNavigationView"

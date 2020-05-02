@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -281,6 +283,13 @@ class DonateFragment : Fragment() {
                     .child("users")
                     .child(user.uid)
                     .child("historyEvent").push().setValue(userUpdate)
+
+                Snackbar.make(view, "Thank you for donation", Snackbar.LENGTH_SHORT).show();
+                val activity = view.context as AppCompatActivity
+                val fragment = ExploreFragment()
+
+                activity.getSupportFragmentManager()
+                    .beginTransaction().replace(R.id.root_layout, fragment).addToBackStack(null).commit();
             }
         }
     }
