@@ -72,7 +72,7 @@
         android:gravity="center">
 
         <ProgressBar
-            android:id="@+id/detailsProgressBar"
+            android:id="@+id/savedProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
