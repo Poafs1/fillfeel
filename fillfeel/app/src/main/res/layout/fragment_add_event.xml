@@ -43,6 +43,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventFoundationLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -53,6 +54,7 @@
                         app:hintTextColor="@color/colorPrimaryPink">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addEventFoundation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -60,6 +62,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventProjectNameLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -70,6 +73,7 @@
                         app:hintTextColor="@color/colorPrimaryPink">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addEventProjectName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -77,6 +81,26 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventPeriodLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Period"
+                        app:boxStrokeColor="@color/colorPrimaryPink"
+                        app:hintTextColor="@color/colorPrimaryPink">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addEventPeriod"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventGoalLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -87,10 +111,31 @@
                         app:hintTextColor="@color/colorPrimaryPink">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/addEventGoal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
                             android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addEventTypeOfProgramLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        app:boxStrokeColor="@color/colorPrimaryPink"
+                        app:hintTextColor="@color/colorPrimaryPink"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                            android:id="@+id/addEventTypeOfProgram"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:hint="Type of Program"
+                            android:focusable="false"
+                            android:cursorVisible="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
