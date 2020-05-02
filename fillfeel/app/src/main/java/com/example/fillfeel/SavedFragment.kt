@@ -73,14 +73,13 @@ class SavedFragment : Fragment() {
                                 if (elem != null) {
                                     elem.id = e.getKey()
                                 }
-                                Log.d(TAG, elem.toString())
                                 savedObj.add(elem!!)
                             }
                             savedObj.reverse()
-//                            val savedAdapter = SavedAdapter(savedObj)
-//                            saved_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//                            saved_rvlist.setHasFixedSize(true)
-//                            saved_rvlist.adapter = savedAdapter
+                            val savedAdapter = SavedAdapter(savedObj)
+                            saved_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            saved_rvlist.setHasFixedSize(true)
+                            saved_rvlist.adapter = savedAdapter
                         }
                     } else {
                         // Visible SVG Image

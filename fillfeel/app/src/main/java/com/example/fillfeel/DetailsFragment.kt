@@ -194,8 +194,6 @@ class DetailsFragment : Fragment() {
 
                         headerTitle.text = elem?.tag.plus(" Program")
 
-
-                        val cardImage: CardView = view!!.findViewById(R.id.detailsCard)
                         cardImage.setCardBackgroundColor(Color.parseColor(elem?.paletteImage))
 
                         val divide = elem?.goal?.let { elem.donate?.div(it) }
@@ -209,7 +207,6 @@ class DetailsFragment : Fragment() {
                         savedImg = elem?.img.toString()
                         savedPalette = elem?.paletteImage.toString()
 
-                        val currentDonated: TextView = view!!.findViewById(R.id.detailsEventCurrentDonated)
                         if (elem != null) {
                             currentDonated.text = "US$ " + elem.donate?.toInt().toString()
                             savedCurrent = elem.donate?.toDouble()!!

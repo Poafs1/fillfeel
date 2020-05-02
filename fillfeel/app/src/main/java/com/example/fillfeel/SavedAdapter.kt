@@ -53,7 +53,7 @@ class SavedAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.minicard_view, parent, false)
+            .inflate(R.layout.saved_card, parent, false)
 
         return ViewHolder(v)
     }
@@ -68,7 +68,7 @@ class SavedAdapter (
         holder.card.setCardBackgroundColor(Color.parseColor(data[position].palette))
         Picasso.get().load(img).into(holder.eventImage)
 
-        //ProgressBar
+//        //ProgressBar
         val divide = data[position].goal?.let { data[position].current?.div(it) }
         val calProgress = divide?.times(100)
         if (calProgress != null) {
