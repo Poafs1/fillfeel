@@ -265,7 +265,7 @@ class DonateFragment : Fragment() {
                 val eventUpdate: HashMap<String, Any> = HashMap()
                 eventUpdate.put("uid", user.uid)
                 eventUpdate.put("amount", amount)
-                eventUpdate.put("timestamp", instant.toEpochMilli())
+                eventUpdate.put("timestamp", instant.epochSecond)
 
                 mDatabase
                     .child("events")
