@@ -3,9 +3,6 @@ package com.example.fillfeel
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +12,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
-import com.google.android.material.datepicker.DateValidatorPointBackward.before
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import org.threeten.bp.Instant
 
 
 /**
@@ -235,15 +232,18 @@ class DonateFragment : Fragment() {
                 expDateLayout.error = null
                 cvvLayout.error = null
 
+                val amount = donateAmount.text.toString().toDouble()
+
+                val instant = Instant.now()
+
                 mDatabase.child("events").child(eventId).runTransaction(object : Transaction.Handler {
                     override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                        val p = mutableData.getValue(DetailsObject::class.java)
+                        val p = mutableData.getValue(EventObject::class.java)
                             ?: return Transaction.success(mutableData)
                         if (p == null) {
                             return Transaction.success(mutableData)
                         }
                         p.backers = p.backers?.plus(1)
-                        val amount = donateAmount.text.toString().toDouble()
                         p.donate = p.donate?.plus(amount)
                         mutableData.value = p
                         return Transaction.success(mutableData)
@@ -260,6 +260,19 @@ class DonateFragment : Fragment() {
                         }
                     }
                 })
+
+                // Insert usersDonation into events id
+                val eventUpdate: HashMap<String, Any> = HashMap()
+                eventUpdate.put("uid", user.uid)
+                eventUpdate.put("amount", amount)
+                eventUpdate.put("timestamp", instant.toEpochMilli())
+
+                mDatabase
+                    .child("events")
+                    .child(eventId)
+                    .child("usersDonation").push().setValue(eventUpdate)
+                
+                // Insert historyEvent into users
             }
         }
     }
