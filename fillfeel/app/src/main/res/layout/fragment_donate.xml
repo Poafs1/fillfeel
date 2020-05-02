@@ -63,7 +63,7 @@
                         android:textSize="24sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/donateName"
+                        android:id="@+id/donateFNameLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -74,13 +74,15 @@
                         app:hintTextColor="@color/colorPrimaryPink">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/donateFName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/donateEmail"
+                        android:id="@+id/donateEmailLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -91,13 +93,15 @@
                         app:hintTextColor="@color/colorPrimaryPink">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/donateEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/phoneTextField"
+                        android:id="@+id/donatePhoneLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -110,6 +114,7 @@
                         app:hintTextColor="@color/colorPrimaryPink">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/donatePhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
@@ -136,7 +141,7 @@
                         android:textSize="24sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/donateAmount"
+                        android:id="@+id/donateAmountLayout"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -147,8 +152,11 @@
                         app:hintTextColor="@color/colorPrimaryPink">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/donateAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:digits="1234567890"
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -169,13 +177,15 @@
                         android:textSize="24sp" />
 
                     <LinearLayout
+                        android:id="@+id/donateVisualCredit"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginTop="25dp"
                         android:background="@drawable/paymentcard_gradient"
                         android:orientation="vertical"
                         android:paddingLeft="15dp"
-                        android:paddingRight="15dp">
+                        android:paddingRight="15dp"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -194,12 +204,12 @@
                                 android:textColor="@color/colorItWhite" />
 
                             <TextView
-                                android:id="@+id/textView6"
+                                android:id="@+id/donateVisualCardNumber"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/avenirnext_regular"
-                                android:text="•••• •••• •••• 2070"
+                                android:text=""
                                 android:textColor="@color/colorItWhite"
                                 android:textSize="18sp" />
 
@@ -221,12 +231,12 @@
                                 android:textColor="@color/colorItWhite" />
 
                             <TextView
-                                android:id="@+id/textView8"
+                                android:id="@+id/donateVisualExpDate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/avenirnext_regular"
-                                android:text="06/20"
+                                android:text=""
                                 android:textColor="@color/colorItWhite"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -240,7 +250,7 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/donateCardNumberTextField"
+                            android:id="@+id/donateCardNumberLayout"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -251,16 +261,17 @@
                             app:hintTextColor="@color/colorPrimaryPink">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/donateCardnumber"
+                                android:id="@+id/donateCardNumber"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
                                 android:digits="0123456789 "
                                 android:inputType="text"
                                 android:maxLength="20" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/donateCardHolderTextField"
+                            android:id="@+id/donateCardHolderLayout"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -271,8 +282,10 @@
                             app:hintTextColor="@color/colorPrimaryPink">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/donateCardHolder"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
                                 android:inputType="text" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -283,7 +296,7 @@
                             android:weightSum="2">
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/donateExpireDateTextField"
+                                android:id="@+id/donateExpDateLayout"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -296,16 +309,17 @@
                                 app:hintTextColor="@color/colorPrimaryPink">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/donateExpdate"
+                                    android:id="@+id/donateExpDate"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
                                     android:digits="1234567890/"
                                     android:inputType="date"
                                     android:maxLength="5" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/donateCvvTextField"
+                                android:id="@+id/donateCvvLayout"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -318,13 +332,17 @@
                                 app:hintTextColor="@color/colorPrimaryPink">
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/donateCvv"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
                                     android:digits="1234567890"
                                     android:inputType="textPassword"
                                     android:maxLength="3" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
+
+
                     </LinearLayout>
                 </LinearLayout>
 

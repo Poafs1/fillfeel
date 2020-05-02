@@ -68,7 +68,7 @@ class SavedAdapter (
         holder.card.setCardBackgroundColor(Color.parseColor(data[position].palette))
         Picasso.get().load(img).into(holder.eventImage)
 
-        //ProgressBar
+//        //ProgressBar
         val divide = data[position].goal?.let { data[position].current?.div(it) }
         val calProgress = divide?.times(100)
         if (calProgress != null) {

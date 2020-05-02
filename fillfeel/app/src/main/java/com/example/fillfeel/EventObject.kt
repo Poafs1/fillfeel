@@ -1,9 +1,8 @@
 package com.example.fillfeel
 
-import java.security.Timestamp
-import java.util.*
+import java.util.HashMap
 
-class DetailsObject (
+class EventObject (
     var account: String? = null,
     var backers: Int? = 0,
     var details: String? = null,
@@ -18,5 +17,6 @@ class DetailsObject (
     var status: Boolean? = false,
     var tag: String? = null,
     var timestamps: Long? = null,
-    var title: String? = null
+    var title: String? = null,
+    var usersDonation: HashMap<String, Any?>? = null
 )

@@ -44,12 +44,26 @@ class DetailsFragment : Fragment() {
     private lateinit var eventImg: String
     private lateinit var title: String
 
-    lateinit var savedTitle: String
-    lateinit var savedImg: String
-    lateinit var savedPalette: String
+    lateinit var titleImage: ImageView
+    lateinit var headerTitle: TextView
+    lateinit var cardImage: CardView
+    lateinit var progressBar: ProgressBar
+    lateinit var currentDonated: TextView
+    lateinit var eventGoal: TextView
+    lateinit var currentBackers: TextView
+    lateinit var periodDate: TextView
+    lateinit var daysToGo: TextView
+    lateinit var detailsTitle: TextView
+    lateinit var detailsEventDetail: TextView
+    lateinit var detailsOverview: TextView
+    lateinit var detailsPlan: TextView
+
     var savedCurrent by Delegates.notNull<Double>()
     var savedGoal by Delegates.notNull<Double>()
     var savedBacker by Delegates.notNull<Int>()
+    lateinit var savedTitle: String
+    lateinit var savedImg: String
+    lateinit var savedPalette: String
     var savedEndDate by Delegates.notNull<Long>()
 
     private lateinit var auth: FirebaseAuth
@@ -80,6 +94,20 @@ class DetailsFragment : Fragment() {
         mDatabase = FirebaseDatabase.getInstance().getReference()
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser!!
+
+        titleImage = view!!.findViewById(R.id.detailsCardImg)
+        headerTitle = view!!.findViewById(R.id.detailsHeaderTitle)
+        cardImage = view!!.findViewById(R.id.detailsCard)
+        progressBar = view!!.findViewById(R.id.detailsProgressBar)
+        currentDonated = view!!.findViewById(R.id.detailsEventCurrentDonated)
+        eventGoal = view!!.findViewById(R.id.detailsEventGoal)
+        currentBackers = view!!.findViewById(R.id.detailsBackers)
+        periodDate = view!!.findViewById(R.id.detailsPeriodDate)
+        daysToGo = view!!.findViewById(R.id.detailsDaysToGo)
+        detailsTitle = view!!.findViewById(R.id.detailsTitle)
+        detailsEventDetail = view!!.findViewById(R.id.detailsEventDetail)
+        detailsOverview = view!!.findViewById(R.id.detailsOverview)
+        detailsPlan = view!!.findViewById(R.id.detailsPlan)
 
         val colorQuoteWhite = getResources().getString(R.color.colorQuoteWhite);
         val colorPrimaryPink = getResources().getString(R.color.colorPrimaryPink);
@@ -159,20 +187,15 @@ class DetailsFragment : Fragment() {
                 @SuppressLint("SetTextI18n")
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot!!.exists()) {
+                    if (dataSnapshot.exists()) {
                         val elem = dataSnapshot.getValue(DetailsObject::class.java)
-                        val titleImage: ImageView = view!!.findViewById(R.id.detailsCardImg)
 
                         Picasso.get().load(eventImg).into(titleImage)
 
-                        val headerTitle: TextView = view!!.findViewById(R.id.detailsHeaderTitle)
                         headerTitle.text = elem?.tag.plus(" Program")
 
-
-                        val cardImage: CardView = view!!.findViewById(R.id.detailsCard)
                         cardImage.setCardBackgroundColor(Color.parseColor(elem?.paletteImage))
 
-                        val progressBar: ProgressBar = view!!.findViewById(R.id.detailsProgressBar)
                         val divide = elem?.goal?.let { elem.donate?.div(it) }
                         val calProgress = divide?.times(100)
                         if (calProgress != null) {
@@ -184,19 +207,16 @@ class DetailsFragment : Fragment() {
                         savedImg = elem?.img.toString()
                         savedPalette = elem?.paletteImage.toString()
 
-                        val currentDonated: TextView = view!!.findViewById(R.id.detailsEventCurrentDonated)
                         if (elem != null) {
-                            currentDonated.text = "US$ " + elem.donate.toString()
+                            currentDonated.text = "US$ " + elem.donate?.toInt().toString()
                             savedCurrent = elem.donate?.toDouble()!!
                         }
 
-                        val eventGoal: TextView = view!!.findViewById(R.id.detailsEventGoal)
                         if (elem != null) {
                             eventGoal.text = "goal: US$ " + elem.goal?.roundToInt().toString()
                             savedGoal = elem.goal?.toDouble()!!
                         }
 
-                        val currentBackers: TextView = view!!.findViewById(R.id.detailsBackers)
                         if (elem != null) {
                             currentBackers.text = elem.backers.toString()
                             savedBacker = elem.backers!!
@@ -215,9 +235,6 @@ class DetailsFragment : Fragment() {
                         val nowDate = LocalDateTime.now()
                         savedEndDate = elem?.period!!
 
-                        val periodDate: TextView = view!!.findViewById(R.id.detailsPeriodDate)
-                        val daysToGo: TextView = view!!.findViewById(R.id.detailsDaysToGo)
-
                         if (endDate?.isAfter(nowDate)!!) {
                             if (createDate != null) {
                                 if (endDate != null) {
@@ -231,17 +248,13 @@ class DetailsFragment : Fragment() {
                         val daysBetween: Long = ChronoUnit.DAYS.between(nowDate, endDate)
                         daysToGo.text = daysBetween.toString()
 
-                        val detailsTitle: TextView = view!!.findViewById(R.id.detailsTitle)
                         detailsTitle.text = elem?.title
                         title = elem?.title.toString()
 
-                        val detailsEventDetail: TextView = view!!.findViewById(R.id.detailsEventDetail)
                         detailsEventDetail.text = elem?.details
 
-                        val detailsOverview: TextView = view!!.findViewById(R.id.detailsOverview)
                         detailsOverview.text = elem?.overview
 
-                        val detailsPlan: TextView = view!!.findViewById(R.id.detailsPlan)
                         detailsPlan.text = elem?.plan
                     }
                 }
