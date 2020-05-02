@@ -44,9 +44,12 @@ class DetailsFragment : Fragment() {
     private lateinit var eventImg: String
     private lateinit var title: String
 
-    lateinit var savedCurrent: String
-    lateinit var savedGoal: String
-    lateinit var savedBacker: String
+    lateinit var savedTitle: String
+    lateinit var savedImg: String
+    lateinit var savedPalette: String
+    var savedCurrent by Delegates.notNull<Double>()
+    var savedGoal by Delegates.notNull<Double>()
+    var savedBacker by Delegates.notNull<Int>()
     var savedEndDate by Delegates.notNull<Long>()
 
     private lateinit var auth: FirebaseAuth
@@ -114,6 +117,9 @@ class DetailsFragment : Fragment() {
             } else {
                 // push into savedEvent
                 val childUpdates: MutableMap<String, Any> = mutableMapOf()
+                childUpdates.put(eventId+"/title", savedTitle)
+                childUpdates.put(eventId+"/img", savedImg)
+                childUpdates.put(eventId+"/palette", savedPalette)
                 childUpdates.put(eventId+"/current", savedCurrent)
                 childUpdates.put(eventId+"/goal", savedGoal)
                 childUpdates.put(eventId+"/backer", savedBacker)
@@ -162,6 +168,7 @@ class DetailsFragment : Fragment() {
                         val headerTitle: TextView = view!!.findViewById(R.id.detailsHeaderTitle)
                         headerTitle.text = elem?.tag.plus(" Program")
 
+
                         val cardImage: CardView = view!!.findViewById(R.id.detailsCard)
                         cardImage.setCardBackgroundColor(Color.parseColor(elem?.paletteImage))
 
@@ -172,22 +179,27 @@ class DetailsFragment : Fragment() {
                             progressBar.setProgress(calProgress.roundToInt())
                         }
 
+                        //for saved page
+                        savedTitle = elem?.title.toString()
+                        savedImg = elem?.img.toString()
+                        savedPalette = elem?.paletteImage.toString()
+
                         val currentDonated: TextView = view!!.findViewById(R.id.detailsEventCurrentDonated)
                         if (elem != null) {
                             currentDonated.text = "US$ " + elem.donate.toString()
-                            savedCurrent = elem.donate.toString()
+                            savedCurrent = elem.donate?.toDouble()!!
                         }
 
                         val eventGoal: TextView = view!!.findViewById(R.id.detailsEventGoal)
                         if (elem != null) {
                             eventGoal.text = "goal: US$ " + elem.goal?.roundToInt().toString()
-                            savedGoal = elem.goal?.roundToInt().toString()
+                            savedGoal = elem.goal?.toDouble()!!
                         }
 
                         val currentBackers: TextView = view!!.findViewById(R.id.detailsBackers)
                         if (elem != null) {
                             currentBackers.text = elem.backers.toString()
-                            savedBacker = elem.backers.toString()
+                            savedBacker = elem.backers!!
                         }
 
                         val createDate = elem?.timestamps?.let {

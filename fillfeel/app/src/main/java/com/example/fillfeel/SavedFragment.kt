@@ -1,18 +1,20 @@
 package com.example.fillfeel
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.fragment_saved.*
 
 class SavedFragment : Fragment() {
 
@@ -23,6 +25,11 @@ class SavedFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
+
+    lateinit var visualCard: FrameLayout
+    lateinit var visualSVG: FrameLayout
+
+    private lateinit var savedObj: MutableList<SavedObject>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +52,9 @@ class SavedFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser!!
 
+        visualCard = view!!.findViewById(R.id.havesaved)
+        visualSVG = view!!.findViewById(R.id.nosaved)
+
         mDatabase.child("users").child(user.uid).child("savedEvent")
             .addValueEventListener(object: ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -54,8 +64,27 @@ class SavedFragment : Fragment() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         // Has saved
+                        visualSVG.visibility = View.INVISIBLE
+                        visualCard.visibility = View.VISIBLE
+                        savedObj = mutableListOf()
+                        if (dataSnapshot!!.exists()) {
+                            for(e in dataSnapshot.children) {
+                                val elem = e.getValue(SavedObject::class.java)
+                                if (elem != null) {
+                                    elem.id = e.getKey()
+                                }
+                                savedObj.add(elem!!)
+                            }
+                            savedObj.reverse()
+                            val savedAdapter = SavedAdapter(savedObj)
+                            saved_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            saved_rvlist.setHasFixedSize(true)
+                            saved_rvlist.adapter = savedAdapter
+                        }
                     } else {
                         // Visible SVG Image
+                        visualSVG.visibility = View.VISIBLE
+                        visualCard.visibility = View.INVISIBLE
                     }
                 }
             })
