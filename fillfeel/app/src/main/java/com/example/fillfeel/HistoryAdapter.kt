@@ -18,10 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.card_view.view.*
-import kotlinx.android.synthetic.main.card_view.view.card
-import kotlinx.android.synthetic.main.card_view.view.event_img
-import kotlinx.android.synthetic.main.card_view.view.event_title
 import kotlinx.android.synthetic.main.wide_card.view.*
 import java.security.AccessController.getContext
 
@@ -52,12 +48,19 @@ class HistoryAdapter (
         return ViewHolder(v)
     }
 
+    //show information in card
     override fun onBindViewHolder(holder: HistoryAdapter.ViewHolder, position: Int) {
+        //show title
         holder.eventTitle.text = data[position].title
+
+        //show img
         val img = data[position].img
         holder.card.setCardBackgroundColor(Color.parseColor(data[position].paletteImage))
         Picasso.get().load(img).into(holder.eventImage)
 
+        //show historyDonateAmount && historyDonateDate
+
+        //click to details page
         holder.itemView.setOnClickListener{view ->
             val activity = view.context as AppCompatActivity
             val fragment = DetailsFragment()
@@ -84,9 +87,7 @@ class HistoryAdapter (
         val eventTitle: TextView = itemView.event_title
         val eventImage: ImageView = itemView.event_img
         val card: CardView = itemView.card
-        val currentDonated: TextView = itemView.currentDonated
-        val eventGoal: TextView = itemView.eventGoal
-        val backersNum: TextView = itemView.backersNum
-        val daysLeft: TextView = itemView.daysLeft
+        val donateAmount: TextView = itemView.historyDonateAmount
+        val donateDate: TextView = itemView.historyDonateDate
     }
 }
