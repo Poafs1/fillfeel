@@ -64,7 +64,7 @@ class SavedFragment : Fragment() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
                         // Has saved
-                        visualSVG.visibility = View.INVISIBLE
+                        visualSVG.visibility = View.GONE
                         visualCard.visibility = View.VISIBLE
                         savedObj = mutableListOf()
                         if (dataSnapshot!!.exists()) {
