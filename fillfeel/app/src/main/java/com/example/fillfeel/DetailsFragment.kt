@@ -58,15 +58,12 @@ class DetailsFragment : Fragment() {
     lateinit var detailsOverview: TextView
     lateinit var detailsPlan: TextView
 
-    lateinit var savedCurrent: String
-    lateinit var savedGoal: String
-    lateinit var savedBacker: String
-    lateinit var savedTitle: String
-    lateinit var savedImg: String
-    lateinit var savedPalette: String
     var savedCurrent by Delegates.notNull<Double>()
     var savedGoal by Delegates.notNull<Double>()
     var savedBacker by Delegates.notNull<Int>()
+    lateinit var savedTitle: String
+    lateinit var savedImg: String
+    lateinit var savedPalette: String
     var savedEndDate by Delegates.notNull<Long>()
 
     private lateinit var auth: FirebaseAuth
@@ -207,9 +204,6 @@ class DetailsFragment : Fragment() {
                             progressBar.setProgress(calProgress.roundToInt())
                         }
 
-                        if (elem != null) {
-                            currentDonated.text = "US$ " + elem.donate?.toInt().toString()
-                            savedCurrent = elem.donate.toString()
                         //for saved page
                         savedTitle = elem?.title.toString()
                         savedImg = elem?.img.toString()
@@ -217,7 +211,7 @@ class DetailsFragment : Fragment() {
 
                         val currentDonated: TextView = view!!.findViewById(R.id.detailsEventCurrentDonated)
                         if (elem != null) {
-                            currentDonated.text = "US$ " + elem.donate.toString()
+                            currentDonated.text = "US$ " + elem.donate?.toInt().toString()
                             savedCurrent = elem.donate?.toDouble()!!
                         }
 

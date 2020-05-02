@@ -271,7 +271,7 @@ class DonateFragment : Fragment() {
                     .child("events")
                     .child(eventId)
                     .child("usersDonation").push().setValue(eventUpdate)
-                
+
                 // Insert historyEvent into users
             }
         }
