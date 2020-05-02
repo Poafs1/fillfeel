@@ -269,6 +269,12 @@ class DonateFragment : Fragment() {
                     .child("usersDonation").push().setValue(eventUpdate)
 
                 // Insert historyEvent into users
+                val userUpdate: HashMap<String, Any> = HashMap()
+
+                mDatabase
+                    .child("users")
+                    .child(user.uid)
+                    .child("historyEvent").push().setValue(userUpdate)
             }
         }
     }
