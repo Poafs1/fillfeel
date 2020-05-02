@@ -19,10 +19,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import org.threeten.bp.Instant
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class DonateFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
