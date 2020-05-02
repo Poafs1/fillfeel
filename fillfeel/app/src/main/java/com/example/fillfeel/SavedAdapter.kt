@@ -15,16 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.card_view.view.*
-import kotlinx.android.synthetic.main.card_view.view.card
-import kotlinx.android.synthetic.main.card_view.view.event_img
-import kotlinx.android.synthetic.main.card_view.view.event_title
 import kotlinx.android.synthetic.main.saved_card.view.*
-import kotlinx.android.synthetic.main.wide_card.view.*
-import kotlinx.android.synthetic.main.wide_card.view.backersNum
-import kotlinx.android.synthetic.main.wide_card.view.currentDonated
-import kotlinx.android.synthetic.main.wide_card.view.daysLeft
-import kotlinx.android.synthetic.main.wide_card.view.eventGoal
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
@@ -68,7 +59,7 @@ class SavedAdapter (
         holder.card.setCardBackgroundColor(Color.parseColor(data[position].palette))
         Picasso.get().load(img).into(holder.eventImage)
 
-//        //ProgressBar
+        //ProgressBar
         val divide = data[position].goal?.let { data[position].current?.div(it) }
         val calProgress = divide?.times(100)
         if (calProgress != null) {
