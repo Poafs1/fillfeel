@@ -67,8 +67,10 @@ class SavedAdapter (
         }
 
         //show current, goal, backernum
-        holder.currentDonated.text = data[position].current.toString()
-        holder.eventGoal.text = data[position].goal.toString()
+        val getCurrent = data[position].current?.toInt().toString()
+        holder.currentDonated.text = "US$ " + getCurrent
+        val getGoal = data[position].goal?.toInt().toString()
+        holder.eventGoal.text = "goal: US$ " + getGoal
         holder.backersNum.text = data[position].backer.toString()
 
         //calculate days left && show
@@ -82,12 +84,13 @@ class SavedAdapter (
         holder.daysLeft.text = daysBetween.toString()
 
         //click to details page
-        holder.itemView.setOnClickListener{view ->
+        holder.joinButton.setOnClickListener{view ->
             val activity = view.context as AppCompatActivity
             val fragment = DetailsFragment()
 
             val bundle = Bundle()
             bundle.putString("eventId", data[position].id.toString())
+            bundle.putString("eventImg", data[position].img)
             fragment.setArguments(bundle)
 
             fragment.arguments = bundle
@@ -113,5 +116,6 @@ class SavedAdapter (
         val eventGoal: TextView = itemView.eventGoal
         val backersNum: TextView = itemView.backersNum
         val daysLeft: TextView = itemView.daysLeft
+        val joinButton: TextView = itemView.joinButton
     }
 }

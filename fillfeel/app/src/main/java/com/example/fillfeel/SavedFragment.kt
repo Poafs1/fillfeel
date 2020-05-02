@@ -1,5 +1,6 @@
 package com.example.fillfeel
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -77,9 +78,12 @@ class SavedFragment : Fragment() {
                             }
                             savedObj.reverse()
                             val savedAdapter = SavedAdapter(savedObj)
-                            saved_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                            saved_rvlist.setHasFixedSize(true)
-                            saved_rvlist.adapter = savedAdapter
+                            val context: Context = context ?: return
+                            if (context != null && saved_rvlist!= null) {
+                                saved_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                                saved_rvlist.setHasFixedSize(true)
+                                saved_rvlist.adapter = savedAdapter
+                            }
                         }
                     } else {
                         // Visible SVG Image
