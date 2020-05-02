@@ -84,7 +84,7 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val bundle = this.arguments
         eventId = bundle?.getString("eventId", "").toString()
-        eventImg = bundle?.getString("eventImg", "").toString()
+//        eventImg = bundle?.getString("eventImg", "").toString()
     }
 
     @SuppressLint("ResourceType")
@@ -171,6 +171,8 @@ class DetailsFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("eventId", eventId)
             bundle.putString("title", title)
+            bundle.putString("img", savedImg)
+            bundle.putString("palette", savedPalette)
             fragment.setArguments(bundle)
 
             activity.getSupportFragmentManager()
@@ -190,6 +192,7 @@ class DetailsFragment : Fragment() {
                     if (dataSnapshot.exists()) {
                         val elem = dataSnapshot.getValue(DetailsObject::class.java)
 
+                        eventImg = elem?.img.toString()
                         Picasso.get().load(eventImg).into(titleImage)
 
                         headerTitle.text = elem?.tag.plus(" Program")

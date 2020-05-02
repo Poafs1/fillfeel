@@ -5,25 +5,22 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.wide_card.view.*
-import java.security.AccessController.getContext
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
 
 
 class HistoryAdapter (
-    private val data: List<ExploreObject>
+    private val data: List<HistoryObject>
 ) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     @Throws(IllegalArgumentException::class)
@@ -55,10 +52,22 @@ class HistoryAdapter (
 
         //show img
         val img = data[position].img
-        holder.card.setCardBackgroundColor(Color.parseColor(data[position].paletteImage))
+//        holder.card.setCardBackgroundColor(Color.parseColor(data[position].palette))
+        holder.card.setCardBackgroundColor(Color.parseColor("#333333"))
         Picasso.get().load(img).into(holder.eventImage)
 
         //show historyDonateAmount && historyDonateDate
+        val getAmount = data[position].amount?.toInt().toString()
+        holder.donateAmount.text = "US$ " + getAmount
+
+        val donateDate = data[position].timestamp?.let {
+            Instant.ofEpochSecond(it)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+        }
+        val changeFormat = donateDate.toString().split("-")
+        val newFormat = changeFormat[2] + changeFormat[1] + changeFormat[0]
+        holder.donateDate.text = "donate on " + newFormat
 
         //click to details page
         holder.itemView.setOnClickListener{view ->
@@ -66,7 +75,8 @@ class HistoryAdapter (
             val fragment = DetailsFragment()
 
             val bundle = Bundle()
-            bundle.putString("eventId", data[position].id.toString())
+            bundle.putString("eventId", data[position].eid.toString())
+            bundle.putString("eventImg", data[position].img)
             fragment.setArguments(bundle)
 
             fragment.arguments = bundle

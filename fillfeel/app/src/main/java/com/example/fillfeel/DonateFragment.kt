@@ -30,6 +30,8 @@ class DonateFragment : Fragment() {
 
     lateinit var eventId: String
     lateinit var title: String
+    lateinit var img: String
+    lateinit var palette: String
 
     lateinit var donateTitle: TextView
     lateinit var donateFNameLayout: TextInputLayout
@@ -67,6 +69,8 @@ class DonateFragment : Fragment() {
         val bundle = this.arguments
         eventId = bundle?.getString("eventId", "").toString()
         title = bundle?.getString("title", "").toString()
+        img = bundle?.getString("img", "").toString()
+        palette = bundle?.getString("palette", "").toString()
     }
 
     private fun hideKeyboard(activity: Activity?) {
@@ -276,6 +280,9 @@ class DonateFragment : Fragment() {
                 // Insert historyEvent into users
                 val userUpdate: HashMap<String, Any> = HashMap()
                 userUpdate.put("eid", eventId)
+                userUpdate.put("title", title)
+                userUpdate.put("img", img)
+                userUpdate.put("palette", palette)
                 userUpdate.put("amount", amount)
                 userUpdate.put("timestamp", instant.epochSecond)
 
