@@ -53,7 +53,7 @@ class SavedAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.minicard_view, parent, false)
+            .inflate(R.layout.saved_card, parent, false)
 
         return ViewHolder(v)
     }

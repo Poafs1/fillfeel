@@ -8,17 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.DateValidatorPointBackward.before
 import com.google.android.material.textfield.TextInputEditText
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class DonateFragment : Fragment() {
     lateinit var eventId: String
     lateinit var title: String
+
+    lateinit var saveDonateButton: AppCompatButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +64,11 @@ class DonateFragment : Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, start: Int, removed: Int, added: Int) {}
         })
+
+        saveDonateButton = view!!.findViewById(R.id.saveDonateButton)
+        saveDonateButton.setOnClickListener{view ->
+
+        }
     }
 
 }
