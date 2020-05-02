@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import org.threeten.bp.Instant
+import kotlin.properties.Delegates
 
 class DonateFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
@@ -27,8 +28,6 @@ class DonateFragment : Fragment() {
 
     lateinit var eventId: String
     lateinit var title: String
-    lateinit var eventBackers: Int
-    lateinit var endDate: Long
 
     lateinit var donateTitle: TextView
     lateinit var donateFNameLayout: TextInputLayout
@@ -241,11 +240,10 @@ class DonateFragment : Fragment() {
                         if (p == null) {
                             return Transaction.success(mutableData)
                         }
-                        eventBackers = p.backers!!
-                        endDate = p.period!!
 
                         p.backers = p.backers?.plus(1)
                         p.donate = p.donate?.plus(amount)
+
                         mutableData.value = p
                         return Transaction.success(mutableData)
                     }
@@ -278,8 +276,6 @@ class DonateFragment : Fragment() {
                 userUpdate.put("eid", eventId)
                 userUpdate.put("amount", amount)
                 userUpdate.put("timestamp", instant.epochSecond)
-                userUpdate.put("backers", eventBackers)
-                userUpdate.put("endDate", endDate)
 
                 mDatabase
                     .child("users")
