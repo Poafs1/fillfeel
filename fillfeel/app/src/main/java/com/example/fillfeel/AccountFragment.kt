@@ -3,25 +3,21 @@ package com.example.fillfeel
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -43,6 +39,8 @@ class AccountFragment : Fragment() {
     lateinit var accountPhoneLayout: TextInputLayout
     lateinit var accountPhone: TextInputEditText
     lateinit var saveButton: AppCompatButton
+    lateinit var genderAdapter: ArrayAdapter<String?>
+    lateinit var items: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,9 +86,9 @@ class AccountFragment : Fragment() {
         accountPhone = view!!.findViewById(R.id.accountPhone)
         saveButton = view!!.findViewById(R.id.saveAccountTextField)
 
-        val items = listOf("Male", "Female", "Unspecified")
-        val genderAdapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-        (accountGender as? AutoCompleteTextView)?.setAdapter(genderAdapter)
+        items = listOf("Male", "Female", "Unspecified")
+        genderAdapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+        accountGender.setAdapter(genderAdapter)
 
         accountBd.addTextChangedListener(BdTextFormatter())
 
@@ -123,7 +121,12 @@ class AccountFragment : Fragment() {
                         }
                         if (isEmpty(getGender)) {
                             accountGenderLayout.setHintAnimationEnabled(false);
-                            accountGender.setText(getGender)
+                            val context: Context = context ?: return
+                            if (context != null) {
+                                accountGender.setText(getGender)
+                                genderAdapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+                                accountGender.setAdapter(genderAdapter)
+                            }
                         }
                         if (isEmpty(getPhone)) {
                             accountPhoneLayout.setHintAnimationEnabled(false);

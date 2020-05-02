@@ -82,9 +82,12 @@ class ExploreFragment : Fragment() {
                         }
                         highlightObj.reverse()
                         val highlightAdapter = CustomAdapter(highlightObj)
-                        rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        rvlist.setHasFixedSize(true)
-                        rvlist.adapter = highlightAdapter
+                        val context: Context = context ?: return
+                        if (context != null && rvlist != null) {
+                            rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            rvlist.setHasFixedSize(true)
+                            rvlist.adapter = highlightAdapter
+                        }
                     }
                 }
             })
@@ -106,9 +109,12 @@ class ExploreFragment : Fragment() {
                             childObj.add(elem!!)
                         }
                         val childAdapter = miniAdapter(childObj)
-                        child_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        child_rvlist.setHasFixedSize(true)
-                        child_rvlist.adapter = childAdapter
+                        val context: Context = context ?: return
+                        if (context != null) {
+                            child_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            child_rvlist.setHasFixedSize(true)
+                            child_rvlist.adapter = childAdapter
+                        }
                     }
                 }
             })
@@ -130,9 +136,12 @@ class ExploreFragment : Fragment() {
                             elderObj.add(elem!!)
                         }
                         val elderAdapter = miniAdapter(elderObj)
-                        elder_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        elder_rvlist.setHasFixedSize(true)
-                        elder_rvlist.adapter = elderAdapter
+                        val context: Context = context ?: return
+                        if (context != null) {
+                            elder_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            elder_rvlist.setHasFixedSize(true)
+                            elder_rvlist.adapter = elderAdapter
+                        }
                     }
                 }
             })
@@ -154,9 +163,12 @@ class ExploreFragment : Fragment() {
                             patientObj.add(elem!!)
                         }
                         val patientAdapter = miniAdapter(patientObj)
-                        patient_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        patient_rvlist.setHasFixedSize(true)
-                        patient_rvlist.adapter = patientAdapter
+                        val context: Context = context ?: return
+                        if (context != null) {
+                            patient_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            patient_rvlist.setHasFixedSize(true)
+                            patient_rvlist.adapter = patientAdapter
+                        }
                     }
                 }
             })
@@ -178,9 +190,12 @@ class ExploreFragment : Fragment() {
                             animalObj.add(elem!!)
                         }
                         val animalAdapter = miniAdapter(animalObj)
-                        animal_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        animal_rvlist.setHasFixedSize(true)
-                        animal_rvlist.adapter = animalAdapter
+                        val context: Context = context ?: return
+                        if (context != null) {
+                            animal_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            animal_rvlist.setHasFixedSize(true)
+                            animal_rvlist.adapter = animalAdapter
+                        }
                     }
                 }
             })
@@ -202,9 +217,12 @@ class ExploreFragment : Fragment() {
                             environmentObj.add(elem!!)
                         }
                         val enAdapter = miniAdapter(environmentObj)
-                        env_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                        env_rvlist.setHasFixedSize(true)
-                        env_rvlist.adapter = enAdapter
+                        val context: Context = context ?: return
+                        if (context != null) {
+                            env_rvlist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            env_rvlist.setHasFixedSize(true)
+                            env_rvlist.adapter = enAdapter
+                        }
                     }
                 }
             })
