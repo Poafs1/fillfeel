@@ -132,7 +132,7 @@ class DonateFragment : Fragment() {
         visualCredit = view!!.findViewById(R.id.donateVisualCredit)
         visualCardNumber = view!!.findViewById(R.id.donateVisualCardNumber)
         visualExpDate = view!!.findViewById(R.id.donateVisualExpDate)
-        saveButton = view!!.findViewById(R.id.saveDonateTextField)
+        saveButton = view!!.findViewById(R.id.saveDonateButton)
 
         donateTitle.text = title
 
