@@ -1,8 +1,15 @@
 package com.example.fillfeel
 
+import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +19,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
@@ -23,13 +31,11 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.bottom_sheet_layout.view.*
 import kotlinx.android.synthetic.main.image_sheet_layout.view.*
 
-/**
- * A simple [Fragment] subclass.
- */
 class AccountFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
+    var fileUri: Uri? = null
     val TAG: String = "AccountFragment"
 
     lateinit var accountFNameLayout: TextInputLayout
@@ -42,6 +48,7 @@ class AccountFragment : Fragment() {
     lateinit var accountGender: AppCompatAutoCompleteTextView
     lateinit var accountPhoneLayout: TextInputLayout
     lateinit var accountPhone: TextInputEditText
+    lateinit var changePhoto: TextView
     lateinit var saveButton: AppCompatButton
     lateinit var genderAdapter: ArrayAdapter<String?>
     lateinit var items: List<String>
@@ -49,6 +56,11 @@ class AccountFragment : Fragment() {
 
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomSheetView: View
+
+    object AppConstants {
+        val TAKE_PHOTO_REQUEST: Int = 2
+        val PICK_PHOTO_REQUEST: Int = 1
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +87,46 @@ class AccountFragment : Fragment() {
         return true
     }
 
+    //pick img from gallery
+    private fun pickImg() {
+        val pickImgIntent = Intent(Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickImgIntent, AppConstants.PICK_PHOTO_REQUEST)
+    }
+
+    //launch camera to take img via intent
+    private fun launchCamera() {
+        val values = ContentValues(1)
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+        fileUri = contentResolver
+            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+            intent.addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+            startActivityForResult(intent, AppConstants.TAKE_PHOTO_REQUEST)
+        }
+    }
+
+    //ask camera permission
+    fun askCameraPermission() {
+        Dexter.withActivity(this)
+            .withPermission(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ).withListener(object: MultiplePermissionListener {
+                override fun onPermissionChecked(report: MultiplePermissionReport) {
+                    if (report.areAllPermissionsGranted()) {
+                        launchCamera()
+                    } else {
+//                        Snackbar.make(this,"denied", Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            })
     fun handleBottomSheetDialog() {
         bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
         bottomSheetView = layoutInflater.inflate(R.layout.image_sheet_layout, null)
@@ -104,6 +156,7 @@ class AccountFragment : Fragment() {
         accountGender = view!!.findViewById(R.id.accountGender)
         accountPhoneLayout = view!!.findViewById(R.id.accountPhoneLayout)
         accountPhone = view!!.findViewById(R.id.accountPhone)
+        changePhoto = view!!.findViewById(R.id.changePhoto)
         saveButton = view!!.findViewById(R.id.saveAccountTextField)
         photoButton = view!!.findViewById(R.id.accountChangePhoto)
 
