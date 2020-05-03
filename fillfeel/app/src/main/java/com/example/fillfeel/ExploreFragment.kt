@@ -1,5 +1,6 @@
 package com.example.fillfeel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -90,6 +91,7 @@ class ExploreFragment : Fragment() {
                 }
     }
 
+    @SuppressLint("ResourceType")
     fun translateToTh(view: TextView) {
         val text = view.text.toString()
         englishThaiTranslator.translate(text)
