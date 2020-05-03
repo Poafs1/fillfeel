@@ -96,37 +96,29 @@ class AccountFragment : Fragment() {
 
     //launch camera to take img via intent
     private fun launchCamera() {
-        val values = ContentValues(1)
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
-        fileUri = contentResolver
-            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+//        val values = ContentValues(1)
+//        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+//        fileUri = contentResolver
+//            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent.resolveActivity(packageManager) != null) {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
-            intent.addFlags(
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-            startActivityForResult(intent, AppConstants.TAKE_PHOTO_REQUEST)
-        }
+//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        if (intent.resolveActivity(packageManager) != null) {
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+//            intent.addFlags(
+//                Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+//            )
+//            startActivityForResult(intent, AppConstants.TAKE_PHOTO_REQUEST)
+//        }
+
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            .also { takePictureIntent ->
+                takePictureIntent.resolveActivity(packageManager)?.also {
+                    startActivityForResult(takePictureIntent, AppConstants.TAKE_PHOTO_REQUEST)
+                }
+            }
     }
 
-    //ask camera permission
-    fun askCameraPermission() {
-        Dexter.withActivity(this)
-            .withPermission(
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ).withListener(object: MultiplePermissionListener {
-                override fun onPermissionChecked(report: MultiplePermissionReport) {
-                    if (report.areAllPermissionsGranted()) {
-                        launchCamera()
-                    } else {
-//                        Snackbar.make(this,"denied", Snackbar.LENGTH_LONG).show();
-                    }
-                }
-            })
     fun handleBottomSheetDialog() {
         bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
         bottomSheetView = layoutInflater.inflate(R.layout.image_sheet_layout, null)
