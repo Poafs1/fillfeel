@@ -40,6 +40,7 @@ class HistoryFragment : Fragment() {
 
     lateinit var noHistoryTitle: TextView
     lateinit var haveHistoryTitle: TextView
+    lateinit var history_detail: TextView
     lateinit var historyToExplore: AppCompatButton
 
     override fun onCreateView(
@@ -57,6 +58,7 @@ class HistoryFragment : Fragment() {
 
         noHistoryTitle = view!!.findViewById(R.id.nohistory_principle)
         haveHistoryTitle = view!!.findViewById(R.id.havehistory_principle)
+        history_detail = view!!.findViewById(R.id.history_detail)
         historyToExplore = view!!.findViewById(R.id.historyToExplore)
     }
 
@@ -108,10 +110,12 @@ class HistoryFragment : Fragment() {
         if (lang == "en") {
             translateToEn(noHistoryTitle)
             translateToEn(haveHistoryTitle)
+            translateToEn(history_detail)
             translateToEnButton(historyToExplore)
         } else {
             translateToTh(noHistoryTitle)
             translateToTh(haveHistoryTitle)
+            translateToTh(history_detail)
             translateToThButton(historyToExplore)
         }
         return

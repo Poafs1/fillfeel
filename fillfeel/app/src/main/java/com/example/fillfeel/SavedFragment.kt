@@ -40,6 +40,7 @@ class SavedFragment : Fragment() {
 
     lateinit var noSavedTitle: TextView
     lateinit var haveSavedTitle: TextView
+    lateinit var save_detail: TextView
     lateinit var savedToExplore: AppCompatButton
 
     override fun onCreateView(
@@ -57,6 +58,7 @@ class SavedFragment : Fragment() {
 
         noSavedTitle = view!!.findViewById(R.id.nosave_principle)
         haveSavedTitle = view!!.findViewById(R.id.havesaved_principle)
+        save_detail = view!!.findViewById(R.id.save_detail)
         savedToExplore = view!!.findViewById(R.id.savedToExplore)
     }
 
@@ -108,10 +110,12 @@ class SavedFragment : Fragment() {
         if (lang == "en") {
             translateToEn(noSavedTitle)
             translateToEn(haveSavedTitle)
+            translateToEn(save_detail)
             translateToEnButton(savedToExplore)
         } else {
             translateToTh(noSavedTitle)
             translateToTh(haveSavedTitle)
+            translateToTh(save_detail)
             translateToThButton(savedToExplore)
         }
         return

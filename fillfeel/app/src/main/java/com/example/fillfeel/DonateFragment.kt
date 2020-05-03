@@ -72,6 +72,11 @@ class DonateFragment : Fragment() {
     lateinit var donatePaymentDetails: TextView
     lateinit var saveDonateButton: AppCompatButton
 
+
+    lateinit var choosePhotoTitle: TextView
+    lateinit var takeAPhotoSettingsTitle: TextView
+    lateinit var selectPhotoFromGallerySettingsTitle: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -118,6 +123,10 @@ class DonateFragment : Fragment() {
         donateTotalAmount = view!!.findViewById(R.id.donateTotalAmount)
         donatePaymentDetails = view!!.findViewById(R.id.donatePaymentDetails)
         saveDonateButton = view!!.findViewById(R.id.saveDonateButton)
+
+        choosePhotoTitle = view!!.findViewById(R.id.choosePhotoTitle)
+        takeAPhotoSettingsTitle = view!!.findViewById(R.id.takeAPhotoSettingsTitle)
+        selectPhotoFromGallerySettingsTitle = view!!.findViewById(R.id.selectPhotoFromGallerySettingsTitle)
     }
 
     fun translateToEn(view: TextView) {
@@ -199,6 +208,9 @@ class DonateFragment : Fragment() {
             translateToEn(donatePersonalInfo)
             translateToEn(donateTotalAmount)
             translateToEn(donatePaymentDetails)
+            translateToEn(choosePhotoTitle)
+            translateToEn(takeAPhotoSettingsTitle)
+            translateToEn(selectPhotoFromGallerySettingsTitle)
             translateToEnButton(saveDonateButton)
         } else {
             translateToThLayout(donateFNameLayout)
@@ -212,6 +224,9 @@ class DonateFragment : Fragment() {
             translateToTh(donatePersonalInfo)
             translateToTh(donateTotalAmount)
             translateToTh(donatePaymentDetails)
+            translateToTh(choosePhotoTitle)
+            translateToTh(takeAPhotoSettingsTitle)
+            translateToTh(selectPhotoFromGallerySettingsTitle)
             translateToThButton(saveDonateButton)
         }
         return

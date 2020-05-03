@@ -151,6 +151,7 @@
                     android:layout_marginTop="25dp"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/coverImgTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
@@ -166,6 +167,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/addDetailsTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
@@ -201,6 +203,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/addEventOverviewTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
@@ -236,6 +239,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/PlanTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
@@ -271,6 +275,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/addAccTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"

@@ -16,6 +16,7 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/choosePhotoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenirnext_demibold"
@@ -43,6 +44,7 @@
             app:srcCompat="@drawable/ic_camera_alt_24px" />
 
         <TextView
+            android:id="@+id/takeAPhotoSettingsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -80,6 +82,7 @@
             app:srcCompat="@drawable/ic_insert_photo_24px" />
 
         <TextView
+            android:id="@+id/selectPhotoFromGallerySettingsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
