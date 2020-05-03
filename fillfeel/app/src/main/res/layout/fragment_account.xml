@@ -29,7 +29,7 @@
             android:paddingBottom="100dp">
 
             <TextView
-                android:id="@+id/detailsHeaderTitle"
+                android:id="@+id/accountHeaderTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenirnext_medium"
@@ -52,7 +52,7 @@
                     app:srcCompat="@drawable/ic_standarddisplay" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/accountChangePhoto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

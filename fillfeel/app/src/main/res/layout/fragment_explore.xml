@@ -101,7 +101,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="36dp"
                         android:fontFamily="@font/avenirnext_medium"
-                        android:text="Elderer"
+                        android:text="Elder"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="@id/child_layout"
