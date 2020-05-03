@@ -1,5 +1,6 @@
 package com.example.fillfeel
 
+import android.content.ClipData
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -32,7 +33,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
@@ -45,8 +46,10 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    private val TAG: String = "MainActivity"
+    private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+    private val TAG: String = "MainActivity"
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var gso: GoogleSignInOptions
     private val RC_SIGN_IN: Int = 1
@@ -58,10 +61,81 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomSheetView: View
     private lateinit var mTopToolbar: Toolbar
+    lateinit var bottomNavigationMenu: Menu
+    lateinit var exploreMenu: MenuItem
+    lateinit var savedMenu: MenuItem
+    lateinit var historyMenu: MenuItem
+
+    lateinit var englishThaiTranslator: FirebaseTranslator
+    lateinit var thaiEnglishTranslator: FirebaseTranslator
+
+    fun translateToEn(menu: MenuItem) {
+        val text = menu.title.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                menu.setTitle(translatedText)
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToTh(menu: MenuItem) {
+        val text = menu.title.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                menu.setTitle(translatedText)
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun languageChange(lang: String) {
+        if (lang == "en") {
+            translateToEn(exploreMenu)
+            translateToEn(savedMenu)
+            translateToEn(historyMenu)
+        } else {
+            translateToTh(exploreMenu)
+            translateToTh(savedMenu)
+            translateToTh(historyMenu)
+        }
+        return
+    }
+
+    fun initTranslation() {
+        val options1 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.EN)
+            .setTargetLanguage(FirebaseTranslateLanguage.TH)
+            .build()
+
+        val options2 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.TH)
+            .setTargetLanguage(FirebaseTranslateLanguage.EN)
+            .build()
+
+        englishThaiTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options1)
+        englishThaiTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+
+        thaiEnglishTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options2)
+        thaiEnglishTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initTranslation()
         AndroidThreeTen.init(this)
 
         // Firebase Realtime Database for Offline Mode and keep it refresh in some table
@@ -81,6 +155,24 @@ class MainActivity : AppCompatActivity() {
 
         // Firebase Authentication Init
         auth = FirebaseAuth.getInstance()
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+        user = auth.currentUser!!
+
+        mDatabase
+            .child("users")
+            .child(user.uid).child("lang")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        languageChange(dataSnapshot.value.toString())
+                    }
+                }
+            })
+
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -208,6 +300,10 @@ class MainActivity : AppCompatActivity() {
     private fun handleBottomNavigationBar() {
         bottomNavigation = findViewById(R.id.bottom_navigation)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottomNavigationMenu = bottomNavigation.menu
+        exploreMenu = bottomNavigationMenu.findItem(R.id.bottomNavigationExploreMenuId)
+        savedMenu = bottomNavigationMenu.findItem(R.id.bottomNavigationHistoryMenuId)
+        historyMenu = bottomNavigationMenu.findItem(R.id.bottomNavigationSavedMenuId)
         bottomNavigation.visibility = View.GONE
     }
 
