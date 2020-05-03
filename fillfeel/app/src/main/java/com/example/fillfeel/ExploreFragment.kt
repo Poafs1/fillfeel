@@ -91,7 +91,6 @@ class ExploreFragment : Fragment() {
                 }
     }
 
-    @SuppressLint("ResourceType")
     fun translateToTh(view: TextView) {
         val text = view.text.toString()
         englishThaiTranslator.translate(text)
