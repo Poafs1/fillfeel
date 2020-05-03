@@ -18,17 +18,20 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import org.w3c.dom.Text
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class PaymentFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
     val TAG: String = "PaymentFragment"
+
+    lateinit var englishThaiTranslator: FirebaseTranslator
+    lateinit var thaiEnglishTranslator: FirebaseTranslator
 
     lateinit var cardNumberLayout: TextInputLayout
     lateinit var cardNumber: TextInputEditText
@@ -43,12 +46,129 @@ class PaymentFragment : Fragment() {
     lateinit var visualCardNumber: TextView
     lateinit var visualExpDate: TextView
 
+    lateinit var detailsHeaderTitle: TextView
+    lateinit var paymentCardNumberLayout: TextInputLayout
+    lateinit var paymentCardHolderLayout: TextInputLayout
+    lateinit var paymentExpDateLayout: TextInputLayout
+    lateinit var savePaymentTextField: AppCompatButton
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_payment, container, false)
+    }
+
+    fun translateToEn(view: TextView) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToTh(view: TextView) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnLayout(view: TextInputLayout) {
+        val text = view.hint.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.hint = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToThLayout(view: TextInputLayout) {
+        val text = view.hint.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.hint = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToThButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun languageChange(lang: String) {
+        if (lang == "en") {
+            translateToEn(detailsHeaderTitle)
+            translateToEnLayout(paymentCardNumberLayout)
+            translateToEnLayout(paymentCardHolderLayout)
+            translateToEnLayout(paymentExpDateLayout)
+            translateToEnButton(savePaymentTextField)
+        } else {
+            translateToTh(detailsHeaderTitle)
+            translateToThLayout(paymentCardNumberLayout)
+            translateToThLayout(paymentCardHolderLayout)
+            translateToThLayout(paymentExpDateLayout)
+            translateToThButton(savePaymentTextField)
+        }
+        return
+    }
+
+    fun initTranslation() {
+        val options1 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.EN)
+            .setTargetLanguage(FirebaseTranslateLanguage.TH)
+            .build()
+
+        val options2 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.TH)
+            .setTargetLanguage(FirebaseTranslateLanguage.EN)
+            .build()
+
+        englishThaiTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options1)
+        englishThaiTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+
+        thaiEnglishTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options2)
+        thaiEnglishTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
     }
 
     private fun hideKeyboard(activity: Activity?) {
@@ -59,7 +179,6 @@ class PaymentFragment : Fragment() {
         val v = activity?.currentFocus ?: return
         inputManager?.hideSoftInputFromWindow(v.windowToken, 0)
     }
-
 
     private fun validateCardNumber() : Boolean {
         val text = cardNumber?.text.toString().trim()
@@ -110,6 +229,29 @@ class PaymentFragment : Fragment() {
         visualCredit = view!!.findViewById(R.id.visualCredit)
         visualCardNumber = view!!.findViewById(R.id.visualCardNumber)
         visualExpDate = view!!.findViewById(R.id.visualExpDate)
+
+        detailsHeaderTitle = view!!.findViewById(R.id.detailsHeaderTitle)
+        paymentCardNumberLayout = view!!.findViewById(R.id.paymentCardNumberLayout)
+        paymentCardHolderLayout = view!!.findViewById(R.id.paymentCardHolderLayout)
+        paymentExpDateLayout = view!!.findViewById(R.id.paymentExpDateLayout)
+        savePaymentTextField = view!!.findViewById(R.id.savePaymentTextField)
+
+        initTranslation()
+
+        mDatabase
+            .child("users")
+            .child(user.uid).child("lang")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        languageChange(dataSnapshot.value.toString())
+                    }
+                }
+            })
 
         mDatabase.child("users").child(user.uid)
             .addValueEventListener(object: ValueEventListener {

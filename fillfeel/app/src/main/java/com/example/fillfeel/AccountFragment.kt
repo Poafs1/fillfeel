@@ -57,10 +57,10 @@ class AccountFragment : Fragment() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomSheetView: View
 
-    object AppConstants {
-        val TAKE_PHOTO_REQUEST: Int = 2
-        val PICK_PHOTO_REQUEST: Int = 1
-    }
+//    object AppConstants {
+//        val TAKE_PHOTO_REQUEST: Int = 2
+//        val PICK_PHOTO_REQUEST: Int = 1
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,37 +87,37 @@ class AccountFragment : Fragment() {
         return true
     }
 
-    //pick img from gallery
-    private fun pickImg() {
-        val pickImgIntent = Intent(Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(pickImgIntent, AppConstants.PICK_PHOTO_REQUEST)
-    }
-
-    //launch camera to take img via intent
-    private fun launchCamera() {
-//        val values = ContentValues(1)
-//        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
-//        fileUri = contentResolver
-//            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-
-//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        if (intent.resolveActivity(packageManager) != null) {
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
-//            intent.addFlags(
-//                Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-//            )
-//            startActivityForResult(intent, AppConstants.TAKE_PHOTO_REQUEST)
-//        }
-
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            .also { takePictureIntent ->
-                takePictureIntent.resolveActivity(packageManager)?.also {
-                    startActivityForResult(takePictureIntent, AppConstants.TAKE_PHOTO_REQUEST)
-                }
-            }
-    }
+//    //pick img from gallery
+//    private fun pickImg() {
+//        val pickImgIntent = Intent(Intent.ACTION_PICK,
+//            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//        startActivityForResult(pickImgIntent, AppConstants.PICK_PHOTO_REQUEST)
+//    }
+//
+//    //launch camera to take img via intent
+//    private fun launchCamera() {
+////        val values = ContentValues(1)
+////        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+////        fileUri = contentResolver
+////            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+//
+////        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+////        if (intent.resolveActivity(packageManager) != null) {
+////            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+////            intent.addFlags(
+////                Intent.FLAG_GRANT_READ_URI_PERMISSION
+////                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+////            )
+////            startActivityForResult(intent, AppConstants.TAKE_PHOTO_REQUEST)
+////        }
+//
+//        Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//            .also { takePictureIntent ->
+//                takePictureIntent.resolveActivity(packageManager)?.also {
+//                    startActivityForResult(takePictureIntent, AppConstants.TAKE_PHOTO_REQUEST)
+//                }
+//            }
+//    }
 
     fun handleBottomSheetDialog() {
         bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
@@ -148,7 +148,6 @@ class AccountFragment : Fragment() {
         accountGender = view!!.findViewById(R.id.accountGender)
         accountPhoneLayout = view!!.findViewById(R.id.accountPhoneLayout)
         accountPhone = view!!.findViewById(R.id.accountPhone)
-        changePhoto = view!!.findViewById(R.id.changePhoto)
         saveButton = view!!.findViewById(R.id.saveAccountTextField)
         photoButton = view!!.findViewById(R.id.accountChangePhoto)
 
