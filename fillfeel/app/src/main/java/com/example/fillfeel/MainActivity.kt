@@ -120,20 +120,20 @@ class MainActivity : AppCompatActivity() {
 
     fun languageChange(lang: String) {
         if (lang == "en") {
-            translateToEn(settingTitle)
-            translateToEn(accountSettingTitle)
-            translateToEn(changeLanguageSettingTitle)
-            translateToEn(paymentSettingTitle)
-            translateToEn(signoutSettingTitle)
+//            translateToEn(settingTitle)
+//            translateToEn(accountSettingTitle)
+//            translateToEn(changeLanguageSettingTitle)
+//            translateToEn(paymentSettingTitle)
+//            translateToEn(signoutSettingTitle)
             translateToEnMenu(exploreMenu)
             translateToEnMenu(savedMenu)
             translateToEnMenu(historyMenu)
         } else {
-            translateToTh(settingTitle)
-            translateToTh(accountSettingTitle)
-            translateToTh(changeLanguageSettingTitle)
-            translateToTh(paymentSettingTitle)
-            translateToTh(signoutSettingTitle)
+//            translateToTh(settingTitle)
+//            translateToTh(accountSettingTitle)
+//            translateToTh(changeLanguageSettingTitle)
+//            translateToTh(paymentSettingTitle)
+//            translateToTh(signoutSettingTitle)
             translateToThMenu(exploreMenu)
             translateToThMenu(savedMenu)
             translateToThMenu(historyMenu)
@@ -171,6 +171,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        settingTitle = findViewById(R.id.settingTitle)
+//        accountSettingTitle = findViewById(R.id.accountSettingTitle)
+//        changeLanguageSettingTitle = findViewById(R.id.changeLanguageSettingTitle)
+//        paymentSettingTitle = findViewById(R.id.paymentSettingTitle)
+//        signoutSettingTitle = findViewById(R.id.signoutSettingTitle)
 
         initTranslation()
         AndroidThreeTen.init(this)
@@ -255,12 +261,6 @@ class MainActivity : AppCompatActivity() {
         val nightMode = getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         handleNighMode(nightMode)
         handleBottomSheetDialog(currentFragment)
-
-        settingTitle = findViewById(R.id.settingTitle)
-        accountSettingTitle = findViewById(R.id.accountSettingTitle)
-        changeLanguageSettingTitle = findViewById(R.id.changeLanguageSettingTitle)
-        paymentSettingTitle = findViewById(R.id.paymentSettingTitle)
-        signoutSettingTitle = findViewById(R.id.signoutSettingTitle)
     }
 
     /*

@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirnext_medium"
                     android:text=""
-                    android:textColor="@color/colorItDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="30sp" />
 
                 <LinearLayout
@@ -60,7 +60,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/avenirnext_demibold"
                         android:text=""
-                        android:textColor="@color/colorItDark" />
+                        android:textColor="@color/colorPrimaryDark" />
 
                 </LinearLayout>
 
@@ -106,7 +106,7 @@
                     android:layout_marginBottom="15dp"
                     android:fontFamily="@font/avenirnext_medium"
                     android:text="Donation"
-                    android:textColor="@color/colorItDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="24sp" />
 
                 <ProgressBar
@@ -232,7 +232,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/sukhumvit_bold"
                             android:paddingRight="25dp"
-                            android:textColor="@color/colorItDark"
+                            android:textColor="@color/colorPrimaryDark"
                             android:textSize="24sp" />
 
                         <ImageView
@@ -252,7 +252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/sukhumvit_text"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
                         app:lineHeight="35dp" />
 
@@ -270,7 +270,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Overview"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <TextView
@@ -279,7 +279,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/sukhumvit_text"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
                         app:lineHeight="35dp" />
 
@@ -297,7 +297,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Plan"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <TextView
@@ -306,7 +306,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/sukhumvit_text"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
                         app:lineHeight="35dp" />
                 </LinearLayout>

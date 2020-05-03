@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenirnext_medium"
                 android:text="Profile"
-                android:textColor="@color/colorItDark"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="30sp" />
 
             <LinearLayout

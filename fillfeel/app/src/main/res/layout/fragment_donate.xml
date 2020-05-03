@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirnext_medium"
                     android:text="Donate to:"
-                    android:textColor="@color/colorItDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="30sp" />
 
                 <TextView
@@ -44,7 +44,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/sukhumvit_bold"
                     android:paddingRight="25dp"
-                    android:textColor="@color/colorItDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="24sp" />
 
                 <LinearLayout
@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Personal Information"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -137,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Total Amount"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -173,7 +173,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Payment Details"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <LinearLayout

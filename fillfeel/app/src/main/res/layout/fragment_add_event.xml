@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirnext_medium"
                     android:text="Create New Program"
-                    android:textColor="@color/colorItDark"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="30sp" />
 
                 <LinearLayout
@@ -157,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Details"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Overview"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -229,7 +229,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Plan"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -265,7 +265,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirnext_medium"
                         android:text="Account Details"
-                        android:textColor="@color/colorItDark"
+                        android:textColor="@color/colorPrimaryDark"
                         android:textSize="24sp" />
 
                     <com.google.android.material.textfield.TextInputLayout

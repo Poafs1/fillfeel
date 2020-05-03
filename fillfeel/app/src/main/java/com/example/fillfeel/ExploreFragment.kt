@@ -183,6 +183,7 @@ class ExploreFragment : Fragment() {
                             if (elem != null) {
                                 elem.id = e.getKey()
                             }
+                            if (elem?.status == false) continue
                             highlightObj.add(elem!!)
                         }
                         highlightObj.reverse()
@@ -211,6 +212,7 @@ class ExploreFragment : Fragment() {
                             if (elem != null) {
                                 elem.id = e.getKey()
                             }
+                            if (elem?.status == false) continue
                             childObj.add(elem!!)
                         }
                         val childAdapter = miniAdapter(childObj)
@@ -238,6 +240,7 @@ class ExploreFragment : Fragment() {
                             if (elem != null) {
                                 elem.id = e.getKey()
                             }
+                            if (elem?.status == false) continue
                             elderObj.add(elem!!)
                         }
                         val elderAdapter = miniAdapter(elderObj)
@@ -265,6 +268,7 @@ class ExploreFragment : Fragment() {
                             if (elem != null) {
                                 elem.id = e.getKey()
                             }
+                            if (elem?.status == false) continue
                             patientObj.add(elem!!)
                         }
                         val patientAdapter = miniAdapter(patientObj)
@@ -292,6 +296,7 @@ class ExploreFragment : Fragment() {
                             if (elem != null) {
                                 elem.id = e.getKey()
                             }
+                            if (elem?.status == false) continue
                             animalObj.add(elem!!)
                         }
                         val animalAdapter = miniAdapter(animalObj)
@@ -319,6 +324,7 @@ class ExploreFragment : Fragment() {
                             if (elem != null) {
                                 elem.id = e.getKey()
                             }
+                            if (elem?.status == false) continue
                             environmentObj.add(elem!!)
                         }
                         val enAdapter = miniAdapter(environmentObj)

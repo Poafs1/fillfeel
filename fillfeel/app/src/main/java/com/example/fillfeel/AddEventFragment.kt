@@ -163,7 +163,6 @@ class AddEventFragment : Fragment() {
     fun languageChange(lang: String) {
         if (lang == "en") {
             translateToEn(addEventHeaderTitle)
-            translateToEn(coverImgTitle)
             translateToEn(addDetailsTitle)
             translateToEn(addEventOverviewTitle)
             translateToEn(PlanTitle)
@@ -177,7 +176,6 @@ class AddEventFragment : Fragment() {
             translateToEnButton(saveAddEventTextField)
         } else {
             translateToTh(addEventHeaderTitle)
-            translateToTh(coverImgTitle)
             translateToTh(addDetailsTitle)
             translateToTh(addEventOverviewTitle)
             translateToTh(PlanTitle)
@@ -248,6 +246,15 @@ class AddEventFragment : Fragment() {
         return true
     }
 
+    fun dateformat(date: String): String {
+        if (date.length < 2) {
+            return "0" + date
+        } else {
+            return date
+        }
+    }
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -278,7 +285,6 @@ class AddEventFragment : Fragment() {
         saveButton = view!!.findViewById(R.id.saveAddEventTextField)
 
         addEventHeaderTitle = view!!.findViewById(R.id.addEventHeaderTitle)
-        coverImgTitle = view!!.findViewById(R.id.coverImgTitle)
         addDetailsTitle = view!!.findViewById(R.id.addDetailsTitle)
         addEventOverviewTitle = view!!.findViewById(R.id.addEventOverviewTitle)
         PlanTitle = view!!.findViewById(R.id.PlanTitle)
@@ -369,7 +375,7 @@ class AddEventFragment : Fragment() {
 
                 val getPeriod = addEventPeriod.text.toString()
                 val changeFormat = getPeriod.split("/")
-                val newFormat = changeFormat[2] + "-0" + changeFormat[1] + "-0" + changeFormat[0] + " 00:00:00"
+                val newFormat = changeFormat[2] + "-" + dateformat(changeFormat[1]) + "-" + dateformat(changeFormat[0]) + " 00:00:00"
 
                 val localDateTime = LocalDateTime.parse(newFormat, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                     .atZone(ZoneId.of("America/Los_Angeles"));
