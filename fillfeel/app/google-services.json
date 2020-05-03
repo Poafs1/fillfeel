@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "303398836769-1l07qpr9d8gstl16qtkmuuoiumkr36se.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fillfeel",
+            "certificate_hash": "1120d28515d765601cd18a48d6607ca1ba75fac4"
+          }
+        },
+        {
           "client_id": "303398836769-qt26psr21mf9fq55684oceuedf1hh0u0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

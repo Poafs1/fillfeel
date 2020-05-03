@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PaymentFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="50dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="25dp"
+                android:paddingBottom="100dp">
+
+                <TextView
+                    android:id="@+id/detailsHeaderTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenirnext_medium"
+                    android:text="Payment Details"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="30sp" />
+
+                <LinearLayout
+                    android:id="@+id/visualCredit"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/paymentcard_gradient"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:layout_weight="0"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/avenirnext_regular"
+                            android:text="CARD NUMBER"
+                            android:textColor="@color/colorItWhite" />
+
+                        <TextView
+                            android:id="@+id/visualCardNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/avenirnext_regular"
+                            android:text=""
+                            android:textColor="@color/colorItWhite"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/avenirnext_regular"
+                            android:text="VALID THROUGH"
+                            android:textColor="@color/colorItWhite" />
+
+                        <TextView
+                            android:id="@+id/visualExpDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/avenirnext_regular"
+                            android:text=""
+                            android:textColor="@color/colorItWhite"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/paymentCardNumberLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Card Number"
+                        app:boxStrokeColor="@color/colorPrimaryPink"
+                        app:hintTextColor="@color/colorPrimaryPink">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/paymentCardNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:digits="0123456789 "
+                            android:inputType="text"
+                            android:maxLength="20" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/paymentCardHolderLayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Card Holder"
+                        app:boxStrokeColor="@color/colorPrimaryPink"
+                        app:hintTextColor="@color/colorPrimaryPink">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/paymentCardHolder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/paymentExpDateLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:hint="Expiry Date"
+                            android:paddingRight="2.5dp"
+                            app:boxStrokeColor="@color/colorPrimaryPink"
+                            app:hintTextColor="@color/colorPrimaryPink">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/paymentExpDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:digits="1234567890/"
+                                android:inputType="date"
+                                android:maxLength="5" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/paymentCvvLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:hint="CVV"
+                            android:paddingLeft="2.5dp"
+                            app:boxStrokeColor="@color/colorPrimaryPink"
+                            app:hintTextColor="@color/colorPrimaryPink">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/paymentCvv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:digits="1234567890"
+                                android:inputType="textPassword"
+                                android:maxLength="3" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/savePaymentTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/button_gradient"
+                    android:fontFamily="@font/avenirnext_medium"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorItWhite"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
