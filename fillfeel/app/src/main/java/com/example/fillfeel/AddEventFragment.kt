@@ -32,11 +32,11 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.image_sheet_layout.view.*
+import com.google.firebase.database.*
+import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
@@ -44,15 +44,14 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class AddEventFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
     val TAG: String = "AddEventFragment"
+
+    lateinit var englishThaiTranslator: FirebaseTranslator
+    lateinit var thaiEnglishTranslator: FirebaseTranslator
 
     lateinit var addEventFoundationLayout: TextInputLayout
     lateinit var addEventFoundation: TextInputEditText
@@ -78,12 +77,148 @@ class AddEventFragment : Fragment() {
     lateinit var builder: MaterialDatePicker.Builder<Long>
     lateinit var picker: MaterialDatePicker<Long>
 
+    lateinit var addEventHeaderTitle: TextView
+    lateinit var coverImgTitle: TextView
+    lateinit var addDetailsTitle: TextView
+    lateinit var addEventOverviewTitle: TextView
+    lateinit var PlanTitle: TextView
+    lateinit var addAccTitle: TextView
+    lateinit var saveAddEventTextField: AppCompatButton
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_event, container, false)
+    }
+
+    fun translateToEn(view: TextView) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToTh(view: TextView) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnLayout(view: TextInputLayout) {
+        val text = view.hint.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.hint = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToThLayout(view: TextInputLayout) {
+        val text = view.hint.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.hint = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToThButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun languageChange(lang: String) {
+        if (lang == "en") {
+            translateToEn(addEventHeaderTitle)
+            translateToEn(coverImgTitle)
+            translateToEn(addDetailsTitle)
+            translateToEn(addEventOverviewTitle)
+            translateToEn(PlanTitle)
+            translateToEn(addAccTitle)
+            translateToEnLayout(addEventFoundationLayout)
+            translateToEnLayout(addEventProjectNameLayout)
+            translateToEnLayout(addEventPeriodLayout)
+            translateToEnLayout(addEventGoalLayout)
+            translateToEnLayout(addEventTypeOfProgramLayout)
+            translateToEnLayout(addEventAccountNumberLayout)
+            translateToEnButton(saveAddEventTextField)
+        } else {
+            translateToTh(addEventHeaderTitle)
+            translateToTh(coverImgTitle)
+            translateToTh(addDetailsTitle)
+            translateToTh(addEventOverviewTitle)
+            translateToTh(PlanTitle)
+            translateToTh(addAccTitle)
+            translateToThLayout(addEventFoundationLayout)
+            translateToThLayout(addEventProjectNameLayout)
+            translateToThLayout(addEventPeriodLayout)
+            translateToThLayout(addEventGoalLayout)
+            translateToThLayout(addEventTypeOfProgramLayout)
+            translateToThLayout(addEventAccountNumberLayout)
+            translateToThButton(saveAddEventTextField)
+        }
+        return
+    }
+
+    fun initTranslation() {
+        val options1 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.EN)
+            .setTargetLanguage(FirebaseTranslateLanguage.TH)
+            .build()
+
+        val options2 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.TH)
+            .setTargetLanguage(FirebaseTranslateLanguage.EN)
+            .build()
+
+        englishThaiTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options1)
+        englishThaiTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+
+        thaiEnglishTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options2)
+        thaiEnglishTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
     }
 
     private fun hideKeyboard(activity: Activity?) {
@@ -116,6 +251,8 @@ class AddEventFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        initTranslation()
+
         mDatabase = FirebaseDatabase.getInstance().getReference()
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser!!
@@ -139,6 +276,29 @@ class AddEventFragment : Fragment() {
         addEventAccountNumberLayout = view!!.findViewById(R.id.addEventAccountNumberLayout)
         addEventAccountNumber = view!!.findViewById(R.id.addEventAccountNumber)
         saveButton = view!!.findViewById(R.id.saveAddEventTextField)
+
+        addEventHeaderTitle = view!!.findViewById(R.id.addEventHeaderTitle)
+        coverImgTitle = view!!.findViewById(R.id.coverImgTitle)
+        addDetailsTitle = view!!.findViewById(R.id.addDetailsTitle)
+        addEventOverviewTitle = view!!.findViewById(R.id.addEventOverviewTitle)
+        PlanTitle = view!!.findViewById(R.id.PlanTitle)
+        addAccTitle = view!!.findViewById(R.id.addAccTitle)
+        saveAddEventTextField = view!!.findViewById(R.id.saveAddEventTextField)
+
+        mDatabase
+            .child("users")
+            .child(user.uid).child("lang")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        languageChange(dataSnapshot.value.toString())
+                    }
+                }
+            })
 
         builder = MaterialDatePicker.Builder.datePicker()
         picker = builder.build()

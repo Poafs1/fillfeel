@@ -30,6 +30,10 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
@@ -46,6 +50,9 @@ class AccountFragment : Fragment() {
     var fileUri: Uri? = null
     val TAG: String = "AccountFragment"
 
+    lateinit var englishThaiTranslator: FirebaseTranslator
+    lateinit var thaiEnglishTranslator: FirebaseTranslator
+
     lateinit var accountFNameLayout: TextInputLayout
     lateinit var accountFName: TextInputEditText
     lateinit var accountLNameLayout: TextInputLayout
@@ -56,12 +63,15 @@ class AccountFragment : Fragment() {
     lateinit var accountGender: AppCompatAutoCompleteTextView
     lateinit var accountPhoneLayout: TextInputLayout
     lateinit var accountPhone: TextInputEditText
-    lateinit var changePhoto: TextView
     lateinit var saveButton: AppCompatButton
     lateinit var genderAdapter: ArrayAdapter<String?>
     lateinit var items: List<String>
     lateinit var photoButton: TextView
     lateinit var display: ShapeableImageView
+
+    lateinit var accountHeaderTitle: TextView
+    lateinit var accountChangePhoto: TextView
+
 
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomSheetView: View
@@ -77,6 +87,124 @@ class AccountFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_account, container, false)
+    }
+
+    fun translateToEn(view: TextView) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToTh(view: TextView) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnLayout(view: TextInputLayout) {
+        val text = view.hint.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.hint = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToThLayout(view: TextInputLayout) {
+        val text = view.hint.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.hint = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToThButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun languageChange(lang: String) {
+        if (lang == "en") {
+            translateToEn(accountHeaderTitle)
+            translateToEn(accountChangePhoto)
+            translateToEnLayout(accountFNameLayout)
+            translateToEnLayout(accountLNameLayout)
+            translateToEnLayout(accountBdLayout)
+            translateToEnLayout(accountGenderLayout)
+            translateToEnLayout(accountPhoneLayout)
+            translateToEnLayout(accountPhoneLayout)
+            translateToEnButton(saveButton)
+        } else {
+            translateToTh(accountHeaderTitle)
+            translateToTh(accountChangePhoto)
+            translateToThLayout(accountFNameLayout)
+            translateToThLayout(accountLNameLayout)
+            translateToThLayout(accountBdLayout)
+            translateToThLayout(accountGenderLayout)
+            translateToThLayout(accountPhoneLayout)
+            translateToThButton(saveButton)
+        }
+        return
+    }
+
+    fun initTranslation() {
+        val options1 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.EN)
+            .setTargetLanguage(FirebaseTranslateLanguage.TH)
+            .build()
+
+        val options2 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.TH)
+            .setTargetLanguage(FirebaseTranslateLanguage.EN)
+            .build()
+
+        englishThaiTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options1)
+        englishThaiTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+
+        thaiEnglishTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options2)
+        thaiEnglishTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
     }
 
     private fun hideKeyboard(activity: Activity?) {
@@ -250,11 +378,15 @@ class AccountFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        initTranslation()
+
         mDatabase = FirebaseDatabase.getInstance().getReference()
         mStorageRef = FirebaseStorage.getInstance().getReference()
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser!!
 
+        accountHeaderTitle = view!!.findViewById(R.id.accountHeaderTitle)
+        accountChangePhoto = view!!.findViewById(R.id.accountChangePhoto)
         accountFNameLayout = view!!.findViewById(R.id.accountFNameLayout)
         accountFName = view!!.findViewById(R.id.accountFName)
         accountLNameLayout = view!!.findViewById(R.id.accountLNameLayout)
@@ -265,13 +397,28 @@ class AccountFragment : Fragment() {
         accountGender = view!!.findViewById(R.id.accountGender)
         accountPhoneLayout = view!!.findViewById(R.id.accountPhoneLayout)
         accountPhone = view!!.findViewById(R.id.accountPhone)
-        saveButton = view!!.findViewById(R.id.saveAccountTextField)
+        saveButton = view!!.findViewById(R.id.saveButton)
         photoButton = view!!.findViewById(R.id.accountChangePhoto)
         display = view!!.findViewById(R.id.accountDisplayImage)
 
         items = listOf("Male", "Female", "Unspecified")
         genderAdapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
         accountGender.setAdapter(genderAdapter)
+
+        mDatabase
+            .child("users")
+            .child(user.uid).child("lang")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        languageChange(dataSnapshot.value.toString())
+                    }
+                }
+            })
 
         accountBd.addTextChangedListener(BdTextFormatter())
 

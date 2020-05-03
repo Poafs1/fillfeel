@@ -65,11 +65,38 @@ class MainActivity : AppCompatActivity() {
     lateinit var exploreMenu: MenuItem
     lateinit var savedMenu: MenuItem
     lateinit var historyMenu: MenuItem
+    lateinit var settingTitle: TextView
+    lateinit var accountSettingTitle: TextView
+    lateinit var changeLanguageSettingTitle: TextView
+    lateinit var paymentSettingTitle: TextView
+    lateinit var signoutSettingTitle: TextView
 
     lateinit var englishThaiTranslator: FirebaseTranslator
     lateinit var thaiEnglishTranslator: FirebaseTranslator
 
-    fun translateToEn(menu: MenuItem) {
+    fun translateToEn(view: TextView) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToTh(view: TextView) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnMenu(menu: MenuItem) {
         val text = menu.title.toString()
         thaiEnglishTranslator.translate(text)
             .addOnSuccessListener { translatedText ->
@@ -80,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    fun translateToTh(menu: MenuItem) {
+    fun translateToThMenu(menu: MenuItem) {
         val text = menu.title.toString()
         englishThaiTranslator.translate(text)
             .addOnSuccessListener { translatedText ->
@@ -93,13 +120,23 @@ class MainActivity : AppCompatActivity() {
 
     fun languageChange(lang: String) {
         if (lang == "en") {
-            translateToEn(exploreMenu)
-            translateToEn(savedMenu)
-            translateToEn(historyMenu)
+            translateToEn(settingTitle)
+            translateToEn(accountSettingTitle)
+            translateToEn(changeLanguageSettingTitle)
+            translateToEn(paymentSettingTitle)
+            translateToEn(signoutSettingTitle)
+            translateToEnMenu(exploreMenu)
+            translateToEnMenu(savedMenu)
+            translateToEnMenu(historyMenu)
         } else {
-            translateToTh(exploreMenu)
-            translateToTh(savedMenu)
-            translateToTh(historyMenu)
+            translateToTh(settingTitle)
+            translateToTh(accountSettingTitle)
+            translateToTh(changeLanguageSettingTitle)
+            translateToTh(paymentSettingTitle)
+            translateToTh(signoutSettingTitle)
+            translateToThMenu(exploreMenu)
+            translateToThMenu(savedMenu)
+            translateToThMenu(historyMenu)
         }
         return
     }
@@ -218,6 +255,12 @@ class MainActivity : AppCompatActivity() {
         val nightMode = getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         handleNighMode(nightMode)
         handleBottomSheetDialog(currentFragment)
+
+        settingTitle = findViewById(R.id.settingTitle)
+        accountSettingTitle = findViewById(R.id.accountSettingTitle)
+        changeLanguageSettingTitle = findViewById(R.id.changeLanguageSettingTitle)
+        paymentSettingTitle = findViewById(R.id.paymentSettingTitle)
+        signoutSettingTitle = findViewById(R.id.signoutSettingTitle)
     }
 
     /*

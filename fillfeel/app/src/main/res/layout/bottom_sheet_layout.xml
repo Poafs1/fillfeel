@@ -16,6 +16,7 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/settingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenirnext_demibold"
@@ -43,6 +44,7 @@
             app:srcCompat="@drawable/ic_account_circle_24px" />
 
         <TextView
+            android:id="@+id/accountSettingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -80,6 +82,7 @@
             app:srcCompat="@drawable/ic_g_translate_24px" />
 
         <TextView
+            android:id="@+id/changeLanguageSettingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -117,6 +120,7 @@
             app:srcCompat="@drawable/ic_payment_24px" />
 
         <TextView
+            android:id="@+id/paymentSettingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -148,6 +152,7 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/signoutSettingTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
