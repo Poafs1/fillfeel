@@ -150,20 +150,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="25dp"
                     android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirnext_medium"
-                        android:text="Cover Image"
-                        android:textColor="@color/colorItDark"
-                        android:textSize="24sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="25dp"
-                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"

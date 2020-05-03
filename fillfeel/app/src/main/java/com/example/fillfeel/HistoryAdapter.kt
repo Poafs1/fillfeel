@@ -43,19 +43,8 @@ class HistoryAdapter (
     lateinit var englishThaiTranslator: FirebaseTranslator
     lateinit var thaiEnglishTranslator: FirebaseTranslator
 
-    lateinit var donateOn: String
-
     init {
         this.items = ArrayList()
-    }
-
-    fun languageChange(lang: String) {
-        if (lang == "en") {
-            donateOn = "Donate on "
-        } else {
-            donateOn = "บริจาควันที่ "
-        }
-        return
     }
 
 
@@ -89,8 +78,8 @@ class HistoryAdapter (
                 .toLocalDate()
         }
         val changeFormat = donateDate.toString().split("-")
-        val newFormat = changeFormat[2] + changeFormat[1] + changeFormat[0]
-        holder.donateDate.text = donateOn + newFormat
+        val newFormat = changeFormat[2] + "/" + changeFormat[1] + "/" + changeFormat[0]
+        holder.donateDate.text = "Donated on " + newFormat
 
         //click to details page
         holder.itemView.setOnClickListener{view ->

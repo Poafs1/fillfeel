@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.graphics.ColorUtils.HSLToColor
 import androidx.fragment.app.Fragment
 import androidx.palette.graphics.Palette
 import com.example.fillfeel.AccountFragment.AppConstants.REQUEST_IMAGE_CAPTURE
@@ -198,28 +199,52 @@ class AccountFragment : Fragment() {
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val url = task.result
-                val defaultColor: Int = Color.WHITE
-                val palette: Palette = Palette.from(bitmap).generate()
-                val swatch = palette.vibrantSwatch
-                val rgb = swatch!!.rgb
-                var hex = Integer.toHexString(rgb.and(0xffffff))
-                if (hex.length < 6) {
-                    hex = "0" + hex;
+                val defaultColor: String = "#000000"
+                var hex = ""
+
+                Palette.from(bitmap).generate { palette: Palette? ->
+                    val palette: Palette = Palette.from(bitmap).generate()
+                    val swatch = palette.vibrantSwatch
+                    if (swatch != null) {
+                        val hsl = swatch?.hsl
+
+                        val color = HSLToColor(hsl!!)
+                        val red = Color.red(color)
+                        val green = Color.green(color)
+                        val blue = Color.blue(color)
+                        val alpha = Color.alpha(color)
+
+                        hex = toHex(red, green, blue)
+                    } else {
+                        hex = defaultColor
+                    }
+
+                    val childUpdates: MutableMap<String, Any> = mutableMapOf()
+                    childUpdates.put("displayImg", url.toString())
+                    childUpdates.put("paletteImage", hex)
+
+                    mDatabase
+                        .child("users")
+                        .child(user.uid)
+                        .updateChildren(childUpdates)
                 }
-                hex = "#" + hex;
-
-                val childUpdates: MutableMap<String, Any> = mutableMapOf()
-                childUpdates.put("displayImg", url.toString())
-                childUpdates.put("paletteImage", hex)
-
-                mDatabase
-                    .child("users")
-                    .child(user.uid)
-                    .updateChildren(childUpdates)
             } else {
                 Log.e(TAG, "Upload Image Failure")
             }
         }
+    }
+
+    fun toHex(r: Int, g: Int, b: Int): String {
+        return "#" + hexValue(r) + hexValue(g) + hexValue(b)
+    }
+
+    fun hexValue(number: Int): String {
+        val builder =
+            StringBuilder(Integer.toHexString(number and 0xff))
+        while (builder.length < 2) {
+            builder.append("0");
+        }
+        return builder.toString().toUpperCase();
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -4,18 +4,28 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
+import androidx.palette.graphics.Palette
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -24,14 +34,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlinx.android.synthetic.main.image_sheet_layout.view.*
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.temporal.TemporalQueries.zone
-import java.text.SimpleDateFormat
-import java.time.temporal.TemporalQueries.zone
+import java.io.ByteArrayOutputStream
 import java.util.*
 
 
@@ -191,7 +201,7 @@ class AddEventFragment : Fragment() {
                 eventUpdate.put("overview", addEventOverview.text.toString())
                 eventUpdate.put("plan", addEventPlan.text.toString())
                 eventUpdate.put("rate", 4.6)
-                eventUpdate.put("status", true)
+                eventUpdate.put("status", false)
                 eventUpdate.put("tag", addEventTypeOfProgram.text.toString())
                 eventUpdate.put("title", addEventProjectName.text.toString())
                 eventUpdate.put("foundation", addEventFoundation.text.toString())
