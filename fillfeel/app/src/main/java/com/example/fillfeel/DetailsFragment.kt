@@ -23,6 +23,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import com.squareup.picasso.Picasso
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
@@ -32,14 +36,15 @@ import javax.xml.datatype.DatatypeConstants.DAYS
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class DetailsFragment : Fragment() {
-
-    private val TAG: String = "DetailsFragment"
     private lateinit var mDatabase: DatabaseReference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+    private val TAG: String = "DetailsFragment"
+
+    lateinit var englishThaiTranslator: FirebaseTranslator
+    lateinit var thaiEnglishTranslator: FirebaseTranslator
+
     private lateinit var eventId: String
     private lateinit var eventImg: String
     private lateinit var title: String
@@ -58,6 +63,14 @@ class DetailsFragment : Fragment() {
     lateinit var detailsOverview: TextView
     lateinit var detailsPlan: TextView
 
+    lateinit var detailsPeriod: TextView
+    lateinit var detailsDonation: TextView
+    lateinit var detailsBackersText: TextView
+    lateinit var detailsDaysText: TextView
+    lateinit var detailsOverviewTitle: TextView
+    lateinit var detailsPlanTitle: TextView
+    lateinit var joinButton: AppCompatButton
+
     var savedCurrent by Delegates.notNull<Double>()
     var savedGoal by Delegates.notNull<Double>()
     var savedBacker by Delegates.notNull<Int>()
@@ -66,10 +79,6 @@ class DetailsFragment : Fragment() {
     lateinit var savedPalette: String
     var savedEndDate by Delegates.notNull<Long>()
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var user: FirebaseUser
-
-    lateinit var detailsSaved: ImageView
     var isSaved: Boolean = false
 
     override fun onCreateView(
@@ -85,15 +94,6 @@ class DetailsFragment : Fragment() {
         val bundle = this.arguments
         eventId = bundle?.getString("eventId", "").toString()
 //        eventImg = bundle?.getString("eventImg", "").toString()
-    }
-
-    @SuppressLint("ResourceType")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-        auth = FirebaseAuth.getInstance()
-        user = auth.currentUser!!
 
         titleImage = view!!.findViewById(R.id.detailsCardImg)
         headerTitle = view!!.findViewById(R.id.detailsHeaderTitle)
@@ -109,11 +109,139 @@ class DetailsFragment : Fragment() {
         detailsOverview = view!!.findViewById(R.id.detailsOverview)
         detailsPlan = view!!.findViewById(R.id.detailsPlan)
 
+        detailsPeriod = view!!.findViewById(R.id.detailsPeriod)
+        detailsDonation = view!!.findViewById(R.id.detailsDonation)
+        detailsBackersText = view!!.findViewById(R.id.detailsBackersText)
+        detailsDaysText = view!!.findViewById(R.id.detailsDaysText)
+        detailsOverviewTitle = view!!.findViewById(R.id.detailsOverviewTitle)
+        detailsPlanTitle = view!!.findViewById(R.id.detailsPlanTitle)
+        joinButton = view!!.findViewById(R.id.joinButton)
+    }
+
+    fun translateToEn(view: TextView) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToTh(view: TextView) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+//                view.typeface = R.font.sukhumvit_bold
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToThButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun languageChange(lang: String) {
+        if (lang == "en") {
+            translateToEn(detailsPeriod)
+            translateToEn(detailsDonation)
+            translateToEn(detailsBackersText)
+            translateToEn(detailsDaysText)
+            translateToEn(detailsOverviewTitle)
+            translateToEn(detailsPlanTitle)
+            translateToEnButton(joinButton)
+        } else {
+            translateToTh(detailsPeriod)
+            translateToTh(detailsDonation)
+            translateToTh(detailsBackersText)
+            translateToTh(detailsDaysText)
+            translateToTh(detailsOverviewTitle)
+            translateToTh(detailsPlanTitle)
+            translateToThButton(joinButton)
+        }
+        return
+    }
+
+    fun initTranslation() {
+        val options1 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.EN)
+            .setTargetLanguage(FirebaseTranslateLanguage.TH)
+            .build()
+
+        val options2 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.TH)
+            .setTargetLanguage(FirebaseTranslateLanguage.EN)
+            .build()
+
+        englishThaiTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options1)
+        englishThaiTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+
+        thaiEnglishTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options2)
+        thaiEnglishTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    @SuppressLint("ResourceType")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        initTranslation()
+
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+        auth = FirebaseAuth.getInstance()
+        user = auth.currentUser!!
+
         val colorQuoteWhite = getResources().getString(R.color.colorQuoteWhite);
         val colorPrimaryPink = getResources().getString(R.color.colorPrimaryPink);
 
         val detailsSaved: ImageView = view!!.findViewById(R.id.detailsSaved)
         detailsSaved.setColorFilter(Color.parseColor(colorQuoteWhite))
+
+        mDatabase
+            .child("users")
+            .child(user.uid).child("lang")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        languageChange(dataSnapshot.value.toString())
+                    }
+                }
+            })
 
         mDatabase.child("users").child(user.uid).child("savedEvent").child(eventId)
             .addValueEventListener(object: ValueEventListener {

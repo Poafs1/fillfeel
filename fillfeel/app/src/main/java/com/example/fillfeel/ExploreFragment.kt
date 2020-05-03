@@ -24,10 +24,6 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_explore.*
 import java.io.IOException
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class ExploreFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth

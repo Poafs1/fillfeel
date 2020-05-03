@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,22 +16,31 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import kotlinx.android.synthetic.main.fragment_saved.*
 
 class SavedFragment : Fragment() {
-
-    private lateinit var bottomNavigation: BottomNavigationView
-    lateinit var savedToExplore: AppCompatButton
-
-    private val TAG: String = "SavedFragment"
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var user: FirebaseUser
+    private val TAG: String = "SavedFragment"
+
+    lateinit var englishThaiTranslator: FirebaseTranslator
+    lateinit var thaiEnglishTranslator: FirebaseTranslator
+
+    private lateinit var bottomNavigation: BottomNavigationView
+
+    private lateinit var savedObj: MutableList<SavedObject>
 
     lateinit var visualCard: FrameLayout
     lateinit var visualSVG: FrameLayout
 
-    private lateinit var savedObj: MutableList<SavedObject>
+    lateinit var noSavedTitle: TextView
+    lateinit var haveSavedTitle: TextView
+    lateinit var savedToExplore: AppCompatButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +54,101 @@ class SavedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bottomNavigation = activity!!.findViewById(R.id.bottom_navigation)
         bottomNavigation.menu.getItem(2).isChecked = true
+
+        noSavedTitle = view!!.findViewById(R.id.nosave_principle)
+        haveSavedTitle = view!!.findViewById(R.id.havesaved_principle)
+        savedToExplore = view!!.findViewById(R.id.savedToExplore)
+    }
+
+    fun translateToEn(view: TextView) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToTh(view: TextView) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToEnButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        thaiEnglishTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun translateToThButton(view: AppCompatButton) {
+        val text = view.text.toString()
+        englishThaiTranslator.translate(text)
+            .addOnSuccessListener { translatedText ->
+                view.text = translatedText
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+    }
+
+    fun languageChange(lang: String) {
+        if (lang == "en") {
+            translateToEn(noSavedTitle)
+            translateToEn(haveSavedTitle)
+            translateToEnButton(savedToExplore)
+        } else {
+            translateToTh(noSavedTitle)
+            translateToTh(haveSavedTitle)
+            translateToThButton(savedToExplore)
+        }
+        return
+    }
+
+    fun initTranslation() {
+        val options1 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.EN)
+            .setTargetLanguage(FirebaseTranslateLanguage.TH)
+            .build()
+
+        val options2 = FirebaseTranslatorOptions.Builder()
+            .setSourceLanguage(FirebaseTranslateLanguage.TH)
+            .setTargetLanguage(FirebaseTranslateLanguage.EN)
+            .build()
+
+        englishThaiTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options1)
+        englishThaiTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
+
+        thaiEnglishTranslator = FirebaseNaturalLanguage.getInstance().getTranslator(options2)
+        thaiEnglishTranslator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, exception.toString())
+            }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        initTranslation()
 
         mDatabase = FirebaseDatabase.getInstance().getReference()
         auth = FirebaseAuth.getInstance()
@@ -55,6 +156,21 @@ class SavedFragment : Fragment() {
 
         visualCard = view!!.findViewById(R.id.havesaved)
         visualSVG = view!!.findViewById(R.id.nosaved)
+
+        mDatabase
+            .child("users")
+            .child(user.uid).child("lang")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, databaseError.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        languageChange(dataSnapshot.value.toString())
+                    }
+                }
+            })
 
         mDatabase.child("users").child(user.uid).child("savedEvent")
             .addValueEventListener(object: ValueEventListener {
@@ -93,7 +209,6 @@ class SavedFragment : Fragment() {
                 }
             })
 
-        savedToExplore = view!!.findViewById(R.id.savedToExplore)
         savedToExplore.setOnClickListener{view ->
             val activity = view.context as AppCompatActivity
             val fragment = ExploreFragment()

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.wide_card.view.*
 import org.threeten.bp.Instant
@@ -33,10 +38,26 @@ class HistoryAdapter (
     }
 
     private val items: MutableList<CardView>
+    private val TAG: String = "HistoryAdapter"
+
+    lateinit var englishThaiTranslator: FirebaseTranslator
+    lateinit var thaiEnglishTranslator: FirebaseTranslator
+
+    lateinit var donateOn: String
 
     init {
         this.items = ArrayList()
     }
+
+    fun languageChange(lang: String) {
+        if (lang == "en") {
+            donateOn = "Donate on "
+        } else {
+            donateOn = "บริจาควันที่ "
+        }
+        return
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -47,6 +68,8 @@ class HistoryAdapter (
 
     //show information in card
     override fun onBindViewHolder(holder: HistoryAdapter.ViewHolder, position: Int) {
+
+
         //show title
         holder.eventTitle.text = data[position].title
 
@@ -67,7 +90,7 @@ class HistoryAdapter (
         }
         val changeFormat = donateDate.toString().split("-")
         val newFormat = changeFormat[2] + changeFormat[1] + changeFormat[0]
-        holder.donateDate.text = "donate on " + newFormat
+        holder.donateDate.text = donateOn + newFormat
 
         //click to details page
         holder.itemView.setOnClickListener{view ->
