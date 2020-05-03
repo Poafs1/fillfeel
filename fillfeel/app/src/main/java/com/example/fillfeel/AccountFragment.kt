@@ -17,17 +17,19 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast.makeText
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.bottom_sheet_layout.view.*
+import kotlinx.android.synthetic.main.image_sheet_layout.view.*
 
 class AccountFragment : Fragment() {
     private lateinit var mDatabase: DatabaseReference
@@ -50,6 +52,10 @@ class AccountFragment : Fragment() {
     lateinit var saveButton: AppCompatButton
     lateinit var genderAdapter: ArrayAdapter<String?>
     lateinit var items: List<String>
+    lateinit var photoButton: TextView
+
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var bottomSheetView: View
 
     object AppConstants {
         val TAKE_PHOTO_REQUEST: Int = 2
@@ -121,6 +127,16 @@ class AccountFragment : Fragment() {
                     }
                 }
             })
+    fun handleBottomSheetDialog() {
+        bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
+        bottomSheetView = layoutInflater.inflate(R.layout.image_sheet_layout, null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        bottomSheetView.takeAPhotoSettings.setOnClickListener{view ->
+            // Take a photo
+        }
+        bottomSheetView.selectPhotoFromGallerySettings.setOnClickListener{view ->
+            // Select photo from gallery
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -142,6 +158,7 @@ class AccountFragment : Fragment() {
         accountPhone = view!!.findViewById(R.id.accountPhone)
         changePhoto = view!!.findViewById(R.id.changePhoto)
         saveButton = view!!.findViewById(R.id.saveAccountTextField)
+        photoButton = view!!.findViewById(R.id.accountChangePhoto)
 
         items = listOf("Male", "Female", "Unspecified")
         genderAdapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
@@ -193,17 +210,13 @@ class AccountFragment : Fragment() {
                 }
             })
 
-        changePhoto.setOnClickListener {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                PackageManager.PERMISSION_DENIED){
-                val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
-                requestPermissions(permissions, PERMISSION_CODE);
-            }
-            else{
-                //permission already granted
-                pickImg();
-            }
+        handleBottomSheetDialog()
+
+        photoButton.setOnClickListener {view ->
+            hideKeyboard(getActivity())
+            bottomSheetDialog.show()
         }
+
         saveButton?.setOnClickListener {view ->
             hideKeyboard(getActivity())
 
