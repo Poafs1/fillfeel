@@ -50,7 +50,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
-    private lateinit var user: FirebaseUser
+    var user: FirebaseUser? = null
     private val TAG: String = "MainActivity"
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var gso: GoogleSignInOptions
@@ -67,11 +67,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var exploreMenu: MenuItem
     lateinit var savedMenu: MenuItem
     lateinit var historyMenu: MenuItem
-    lateinit var settingTitle: TextView
-    lateinit var accountSettingTitle: TextView
-    lateinit var changeLanguageSettingTitle: TextView
-    lateinit var paymentSettingTitle: TextView
-    lateinit var signoutSettingTitle: TextView
 
     lateinit var englishThaiTranslator: FirebaseTranslator
     lateinit var thaiEnglishTranslator: FirebaseTranslator
@@ -122,20 +117,10 @@ class MainActivity : AppCompatActivity() {
 
     fun languageChange(lang: String) {
         if (lang == "en") {
-//            translateToEn(settingTitle)
-//            translateToEn(accountSettingTitle)
-//            translateToEn(changeLanguageSettingTitle)
-//            translateToEn(paymentSettingTitle)
-//            translateToEn(signoutSettingTitle)
             translateToEnMenu(exploreMenu)
             translateToEnMenu(savedMenu)
             translateToEnMenu(historyMenu)
         } else {
-//            translateToTh(settingTitle)
-//            translateToTh(accountSettingTitle)
-//            translateToTh(changeLanguageSettingTitle)
-//            translateToTh(paymentSettingTitle)
-//            translateToTh(signoutSettingTitle)
             translateToThMenu(exploreMenu)
             translateToThMenu(savedMenu)
             translateToThMenu(historyMenu)
@@ -171,44 +156,40 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (user != null) {
+            mDatabase
+                .child("users")
+                .child(user!!.uid).child("lang")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Log.e(TAG, databaseError.message)
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Log.d(TAG, "hello")
+                            languageChange(dataSnapshot.value.toString())
+                        }
+                    }
+                })
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        val modelManager = FirebaseModelManager.getInstance()
-        val deModel1 = FirebaseTranslateRemoteModel.Builder(FirebaseTranslateLanguage.EN).build()
-        modelManager.deleteDownloadedModel(deModel1)
-            .addOnSuccessListener {
-                // Model deleted.
-            }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, exception.toString())
-            }
-
-        val deModel2 = FirebaseTranslateRemoteModel.Builder(FirebaseTranslateLanguage.TH).build()
-        modelManager.deleteDownloadedModel(deModel2)
-            .addOnSuccessListener {
-                // Model deleted.
-            }
-            .addOnFailureListener { exception ->
-                Log.e(TAG, exception.toString())
-            }
-
-//        settingTitle = findViewById(R.id.settingTitle)
-//        accountSettingTitle = findViewById(R.id.accountSettingTitle)
-//        changeLanguageSettingTitle = findViewById(R.id.changeLanguageSettingTitle)
-//        paymentSettingTitle = findViewById(R.id.paymentSettingTitle)
-//        signoutSettingTitle = findViewById(R.id.signoutSettingTitle)
 
         initTranslation()
         AndroidThreeTen.init(this)
 //
 //        // Firebase Realtime Database for Offline Mode and keep it refresh in some table
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//        val eventsRef = Firebase.database.getReference("events")
-//        val usersRef = Firebase.database.getReference("users")
-//        eventsRef.keepSynced(true)
-//        usersRef.keepSynced(true)
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        val eventsRef = Firebase.database.getReference("events")
+        val usersRef = Firebase.database.getReference("users")
+        eventsRef.keepSynced(true)
+        usersRef.keepSynced(true)
 //
         setContentView(R.layout.activity_main)
         val fragmentManager: FragmentManager = supportFragmentManager
@@ -221,22 +202,6 @@ class MainActivity : AppCompatActivity() {
 //        // Firebase Authentication Init
         auth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance().getReference()
-        user = auth.currentUser!!
-//
-        mDatabase
-            .child("users")
-            .child(user.uid).child("lang")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.e(TAG, databaseError.message)
-                }
-
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        languageChange(dataSnapshot.value.toString())
-                    }
-                }
-            })
 //
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -383,6 +348,10 @@ class MainActivity : AppCompatActivity() {
 
     // Update start ui after sign in success
     private fun updateUI(account: FirebaseUser?) {
+        if (account != null) {
+            user = account
+        }
+
         val fragment = ExploreFragment()
         authenticationPage.visibility = View.GONE
         supportActionBar?.show()

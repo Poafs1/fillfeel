@@ -58,7 +58,6 @@ class ChangeLanguageFragment : Fragment() {
         englishThaiTranslator.translate(text)
             .addOnSuccessListener { translatedText ->
                 view.text = translatedText
-//                view.typeface = R.font.sukhumvit_bold
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, exception.toString())
