@@ -36,8 +36,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
+import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateRemoteModel
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -48,7 +50,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var mDatabase: DatabaseReference
     private lateinit var auth: FirebaseAuth
-    private lateinit var user: FirebaseUser
+    var user: FirebaseUser? = null
     private val TAG: String = "MainActivity"
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var gso: GoogleSignInOptions
@@ -65,11 +67,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var exploreMenu: MenuItem
     lateinit var savedMenu: MenuItem
     lateinit var historyMenu: MenuItem
-    lateinit var settingTitle: TextView
-    lateinit var accountSettingTitle: TextView
-    lateinit var changeLanguageSettingTitle: TextView
-    lateinit var paymentSettingTitle: TextView
-    lateinit var signoutSettingTitle: TextView
 
     lateinit var englishThaiTranslator: FirebaseTranslator
     lateinit var thaiEnglishTranslator: FirebaseTranslator
@@ -120,20 +117,10 @@ class MainActivity : AppCompatActivity() {
 
     fun languageChange(lang: String) {
         if (lang == "en") {
-//            translateToEn(settingTitle)
-//            translateToEn(accountSettingTitle)
-//            translateToEn(changeLanguageSettingTitle)
-//            translateToEn(paymentSettingTitle)
-//            translateToEn(signoutSettingTitle)
             translateToEnMenu(exploreMenu)
             translateToEnMenu(savedMenu)
             translateToEnMenu(historyMenu)
         } else {
-//            translateToTh(settingTitle)
-//            translateToTh(accountSettingTitle)
-//            translateToTh(changeLanguageSettingTitle)
-//            translateToTh(paymentSettingTitle)
-//            translateToTh(signoutSettingTitle)
             translateToThMenu(exploreMenu)
             translateToThMenu(savedMenu)
             translateToThMenu(historyMenu)
@@ -169,59 +156,59 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (user != null) {
+            mDatabase
+                .child("users")
+                .child(user!!.uid).child("lang")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Log.e(TAG, databaseError.message)
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            Log.d(TAG, "hello")
+                            languageChange(dataSnapshot.value.toString())
+                        }
+                    }
+                })
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        settingTitle = findViewById(R.id.settingTitle)
-//        accountSettingTitle = findViewById(R.id.accountSettingTitle)
-//        changeLanguageSettingTitle = findViewById(R.id.changeLanguageSettingTitle)
-//        paymentSettingTitle = findViewById(R.id.paymentSettingTitle)
-//        signoutSettingTitle = findViewById(R.id.signoutSettingTitle)
-
         initTranslation()
         AndroidThreeTen.init(this)
-
-        // Firebase Realtime Database for Offline Mode and keep it refresh in some table
+//
+//        // Firebase Realtime Database for Offline Mode and keep it refresh in some table
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         val eventsRef = Firebase.database.getReference("events")
         val usersRef = Firebase.database.getReference("users")
         eventsRef.keepSynced(true)
         usersRef.keepSynced(true)
-
+//
         setContentView(R.layout.activity_main)
         val fragmentManager: FragmentManager = supportFragmentManager
         val currentFragment: Fragment? =
             fragmentManager.findFragmentById(R.id.root_layout)
-
+//
         authenticationPage = findViewById(R.id.authentication_page)
         mCallbackManager = CallbackManager.Factory.create()
-
-        // Firebase Authentication Init
+//
+//        // Firebase Authentication Init
         auth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance().getReference()
-        user = auth.currentUser!!
-
-        mDatabase
-            .child("users")
-            .child(user.uid).child("lang")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.e(TAG, databaseError.message)
-                }
-
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        languageChange(dataSnapshot.value.toString())
-                    }
-                }
-            })
-
+//
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
+//
         LoginManager.getInstance().registerCallback(mCallbackManager, object :
             FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
@@ -237,27 +224,27 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "facebook:onError", error)
             }
         })
-
-        // Hidden Toolbar, Bottom Navigation Bar, and Logo in Sign In Page
+//
+//        // Hidden Toolbar, Bottom Navigation Bar, and Logo in Sign In Page
         handleToolbar()
         handleBottomNavigationBar()
         handleLogo()
-
-        // On Click Listener for Google Sign In Method Button
+//
+//        // On Click Listener for Google Sign In Method Button
         val googleButton: Button = findViewById(R.id.google_button)
         googleButton.setOnClickListener{view ->
             method = "google"
             signIn()
         }
-
-        // On Click Listener for Facebook Sign In Method Button
+//
+//        // On Click Listener for Facebook Sign In Method Button
         val facebookButton: Button = findViewById(R.id.facebook_button)
         facebookButton.setOnClickListener{view ->
             method = "facebook"
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"))
             overridePendingTransition(0, 0)
         }
-
+//
         val nightMode = getResources().configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         handleNighMode(nightMode)
         handleBottomSheetDialog(currentFragment)
@@ -361,6 +348,10 @@ class MainActivity : AppCompatActivity() {
 
     // Update start ui after sign in success
     private fun updateUI(account: FirebaseUser?) {
+        if (account != null) {
+            user = account
+        }
+
         val fragment = ExploreFragment()
         authenticationPage.visibility = View.GONE
         supportActionBar?.show()
